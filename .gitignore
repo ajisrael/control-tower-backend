@@ -1,0 +1,9 @@
+data
+AxonFramework
+AxonServer
+plugins
+.java-version
+.idea
+.DS_Store
+target
+out
