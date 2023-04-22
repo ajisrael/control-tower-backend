@@ -5,6 +5,7 @@ import control.tower.core.InventoryItemCreatedEvent;
 import control.tower.core.InventoryItemMovedEvent;
 import control.tower.core.MoveInventoryItemCommand;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
@@ -23,8 +24,6 @@ public class InventoryItem {
 
     private Location location;
 
-    private List<Location> locationHistory;
-
     private double price;
 
     @CommandHandler
@@ -33,28 +32,38 @@ public class InventoryItem {
         throwErrorIfNameIsNullOrEmpty(command.getName());
         throwErrorIfPriceIsLessThanZero(command.getPrice());
 
-        locationHistory.add(command.getLocation());
-        apply(new InventoryItemCreatedEvent(command.getSku(), command.getName(), command.getLocation(), locationHistory, command.getPrice()));
+        apply(new InventoryItemCreatedEvent(command.getSku(), command.getName(), command.getLocation(), command.getPrice()));
     }
 
     @CommandHandler
-    public InventoryItem(MoveInventoryItemCommand command) {
+    public void handle(MoveInventoryItemCommand command) {
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
 
-        setNewLocationAndUpdateLocationHistory(command.getNewLocation());
+        // TODO: Throw error when movementId is not unique
 
-        apply(new InventoryItemMovedEvent(sku, name, location, locationHistory, price));
+        // TODO: Throw error when location is the same
+
+        apply(new InventoryItemMovedEvent(sku, name, command.getNewLocation(), price));
     }
 
-    private void setNewLocationAndUpdateLocationHistory(Location newLocation) {
-        location.setEndTime(new Date());
-        locationHistory.add(newLocation);
-        location = newLocation;
+    @EventSourcingHandler
+    public void on(InventoryItemCreatedEvent event) {
+        sku = event.getSku();
+        name = event.getName();
+        location = event.getLocation();
+        price = event.getPrice();
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemMovedEvent event) {
+
+        location = event.getLocation();
     }
 
     private boolean isNullOrEmpty(String string) {
         return string == null || string.isEmpty();
     }
+
     private void throwErrorIfSkuIsNullOrEmpty(String sku) {
         if (isNullOrEmpty(sku)) {
             throw new IllegalArgumentException("Sku cannot be null or empty");
@@ -70,6 +79,22 @@ public class InventoryItem {
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public InventoryItem() {
