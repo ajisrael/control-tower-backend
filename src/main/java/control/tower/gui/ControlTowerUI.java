@@ -3,28 +3,23 @@ package control.tower.gui;
 import com.vaadin.annotations.Push;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import control.tower.core.CreateInventoryItemCommand;
+import control.tower.core.InventoryItemSummary;
 import control.tower.core.MoveInventoryItemCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 
-import java.util.UUID;
-
 @SpringUI
 @Push
-public class ControlTowerGUI extends UI {
+public class ControlTowerUI extends UI {
 
     private final CommandGateway commandGateway;
 
-    public ControlTowerGUI(CommandGateway commandGateway) {
+    private final InventoryItemSummaryDataProvider inventoryItemSummaryDataProvider;
+
+    public ControlTowerUI(CommandGateway commandGateway, InventoryItemSummaryDataProvider inventoryItemSummaryDataProvider) {
         this.commandGateway = commandGateway;
+        this.inventoryItemSummaryDataProvider = inventoryItemSummaryDataProvider;
     }
 
     @Override
@@ -34,7 +29,7 @@ public class ControlTowerGUI extends UI {
         );
         commandBar.setSizeFull();
 
-        VerticalLayout layout = new VerticalLayout(commandBar);
+        VerticalLayout layout = new VerticalLayout(commandBar, summaryGrid());
         layout.setSizeFull();
 
         getUI().setErrorHandler(event -> {
@@ -65,6 +60,7 @@ public class ControlTowerGUI extends UI {
                             Double.parseDouble(price.getValue()))
             );
             Notification.show("Success", Notification.Type.HUMANIZED_MESSAGE);
+            inventoryItemSummaryDataProvider.refreshAll();
         });
 
         FormLayout form = new FormLayout(sku, locationId, binId, name, price, submit);
@@ -88,11 +84,23 @@ public class ControlTowerGUI extends UI {
                     )
             );
             Notification.show("Success", Notification.Type.HUMANIZED_MESSAGE);
+            inventoryItemSummaryDataProvider.refreshAll();
         });
 
         FormLayout form = new FormLayout(sku, locationId, binId, submit);
         form.setMargin(true);
 
         return new Panel("Move Inventory Item", form);
+    }
+
+    private VerticalLayout summaryGrid() {
+        Grid<InventoryItemSummary> grid = new Grid<>();
+        grid.addColumn(InventoryItemSummary::getSku).setCaption("SKU");
+        grid.addColumn(InventoryItemSummary::getName).setCaption("Name");
+        grid.addColumn(InventoryItemSummary::getPrice).setCaption("Price");
+        grid.addColumn(InventoryItemSummary::getCurrentLocationKey).setCaption("Current Location");
+        grid.setSizeFull();
+        grid.setDataProvider(inventoryItemSummaryDataProvider);
+        return new VerticalLayout(grid, new Button("Refresh", e -> inventoryItemSummaryDataProvider.refreshAll()));
     }
 }

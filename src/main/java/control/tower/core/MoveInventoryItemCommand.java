@@ -1,11 +1,9 @@
 package control.tower.core;
 
-import control.tower.aggregates.Location;
-import org.axonframework.commandhandling.RoutingKey;
+import control.tower.core.valueObjects.Location;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class MoveInventoryItemCommand {
 

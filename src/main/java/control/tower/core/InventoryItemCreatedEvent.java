@@ -1,8 +1,7 @@
 package control.tower.core;
 
-import control.tower.aggregates.Location;
+import control.tower.core.valueObjects.Location;
 
-import java.util.List;
 import java.util.Objects;
 
 public class InventoryItemCreatedEvent {

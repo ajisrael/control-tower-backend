@@ -1,4 +1,4 @@
-package control.tower.aggregates;
+package control.tower.core.valueObjects;
 
 import org.axonframework.modelling.command.EntityId;
 
@@ -12,6 +12,12 @@ public class Location {
     private final String locationId;
     
     private final String binId;
+
+    public Location() {
+        this.locationKey = "default_location_key";
+        this.locationId = "default_location_id";
+        this.binId = "default_bin_id";
+    }
 
     public Location(String locationId, String binId) {
         this.locationKey = locationId + "_" + binId;

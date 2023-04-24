@@ -1,6 +1,6 @@
 package control.tower.core;
 
-import control.tower.aggregates.Location;
+import control.tower.core.valueObjects.Location;
 import org.axonframework.commandhandling.RoutingKey;
 
 import java.util.Objects;
