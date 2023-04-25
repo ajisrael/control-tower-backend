@@ -41,10 +41,6 @@ public class InventoryItemSummary {
         return this.currentLocation;
     }
 
-    public String getCurrentLocationKey() {
-        return this.currentLocation.getLocationKey();
-    }
-
     public double getPrice() {
         return this.price;
     }

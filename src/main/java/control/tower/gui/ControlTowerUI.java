@@ -98,7 +98,7 @@ public class ControlTowerUI extends UI {
         grid.addColumn(InventoryItemSummary::getSku).setCaption("SKU");
         grid.addColumn(InventoryItemSummary::getName).setCaption("Name");
         grid.addColumn(InventoryItemSummary::getPrice).setCaption("Price");
-        grid.addColumn(InventoryItemSummary::getCurrentLocationKey).setCaption("Current Location");
+        grid.addColumn(item -> item.getCurrentLocation().getLocationKey()).setCaption("Current Location");
         grid.setSizeFull();
         grid.setDataProvider(inventoryItemSummaryDataProvider);
         return new VerticalLayout(grid, new Button("Refresh", e -> inventoryItemSummaryDataProvider.refreshAll()));
