@@ -25,10 +25,6 @@ public class Location {
         this.binId = binId;
     }
 
-    public String getLocationKey() {
-        return locationKey;
-    }
-
     public String getLocationId() {
         return locationId;
     }
