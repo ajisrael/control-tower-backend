@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping(path="api/v1/inventoryItem")
 public class InventoryItemController {
@@ -35,6 +33,7 @@ public class InventoryItemController {
                             inventoryItemRequestBody.getPrice()
                     )
             );
+            // TODO: Put messages/prefixes into a constants file that can be imported into the tests (Keep it DRY)
             return ResponseEntity.ok(
                     new InventoryItemResponse(true, "Inventory item created successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
@@ -57,6 +56,7 @@ public class InventoryItemController {
                         moveInventoryItemRequestBody.getBinId()
                     )
             );
+            // TODO: Put messages/prefixes into a constants file that can be imported into the tests (Keep it DRY)
             return ResponseEntity.ok(
                     new InventoryItemResponse(true, "Inventory item moved successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
