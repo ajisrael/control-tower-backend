@@ -28,6 +28,7 @@ public class InventoryItem {
     public InventoryItem(CreateInventoryItemCommand command) {
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
         throwErrorIfNameIsNullOrEmpty(command.getName());
+        throwErrorIfLocationIsNullOrIdsAreNullOrEmpty(command.getLocation());
         throwErrorIfPriceIsLessThanZero(command.getPrice());
 
         apply(new InventoryItemCreatedEvent(command.getSku(), command.getName(), command.getLocation(), command.getPrice()));
@@ -36,10 +37,8 @@ public class InventoryItem {
     @CommandHandler
     public void handle(MoveInventoryItemCommand command) {
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
-
-        // TODO: Throw error when movementId is not unique
-
-        // TODO: Throw error when location is the same
+        throwErrorIfLocationIsNullOrIdsAreNullOrEmpty(command.getNewLocation());
+        throwErrorIfNewLocationIsEqualToCurrentLocation(command.getNewLocation());
 
         apply(new InventoryItemMovedEvent(sku, name, command.getNewLocation(), price));
     }
@@ -54,7 +53,6 @@ public class InventoryItem {
 
     @EventSourcingHandler
     public void on(InventoryItemMovedEvent event) {
-
         location = event.getLocation();
     }
 
@@ -73,10 +71,27 @@ public class InventoryItem {
             throw new IllegalArgumentException("Name cannot be null or empty");
         }
     }
+
+    private void throwErrorIfLocationIsNullOrIdsAreNullOrEmpty(Location location) {
+        if (location == null || isNullOrEmpty(location.getLocationId()) || isNullOrEmpty(location.getBinId())) {
+            throw new IllegalArgumentException("Location cannot be null or empty");
+        }
+    }
+
     private void throwErrorIfPriceIsLessThanZero(double price) {
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
+    }
+
+    private void throwErrorIfNewLocationIsEqualToCurrentLocation(Location newLocation) {
+        if (newLocation.equals(location)) {
+            throw new IllegalArgumentException("Location must be different than current location");
+        }
+    }
+
+    private void throwErrorIfSkuAlreadyExists(String sku) {
+        // TODO: Implement this method
     }
 
     public String getSku() {
