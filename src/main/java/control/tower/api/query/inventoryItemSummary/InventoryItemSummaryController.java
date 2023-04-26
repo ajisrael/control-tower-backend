@@ -23,7 +23,6 @@ public class InventoryItemSummaryController {
     @GetMapping
     public List<InventoryItemSummary> getInventoryItemSummaries(@RequestParam(required = false, defaultValue = "0") int offset,
                                                                 @RequestParam(required = false, defaultValue = "100") int limit) {
-        // TODO: add try catch for proper error handling and notification to client upon error receipt
         return queryGateway.query(
                 new FindInventoryItemSummariesQuery(offset, limit),
                 ResponseTypes.multipleInstancesOf(InventoryItemSummary.class)
