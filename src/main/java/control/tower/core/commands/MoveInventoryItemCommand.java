@@ -12,7 +12,11 @@ public class MoveInventoryItemCommand {
     private final Location newLocation;
 
     // TODO: Create constructor for local moves that only requires binId
-    //  and gets locationId from corresponding inventoryItem using SKU
+    //  and gets locationId from corresponding inventoryItem using SKU.
+    //  or maybe adjust the command to hold locationId and binId as strings.
+    //  Then just create another constructor that sets the locationId to null
+    //  and update the event handler to use the existing locationId when the
+    //  locationId on the event is null.
 
     public MoveInventoryItemCommand(String sku, String locationId, String binId) {
         this.sku = sku;

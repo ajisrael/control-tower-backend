@@ -24,6 +24,8 @@ public class InventoryItem {
 
     private double price;
 
+    // TODO: Review what other fields are required for an Inventory Item
+
     @CommandHandler
     public InventoryItem(CreateInventoryItemCommand command) {
         throwErrorIfSkuIsNullOrEmpty(command.getSku());

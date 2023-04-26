@@ -19,6 +19,7 @@ public class InventoryItemController {
 
     @PostMapping
     public void createInventoryItem(@RequestBody InventoryItemRequestBody inventoryItemRequestBody) {
+        // TODO: add try catch for proper error handling and notification to client upon error receipt
         commandGateway.sendAndWait(
                 new CreateInventoryItemCommand(
                         inventoryItemRequestBody.getSku(),
@@ -32,6 +33,7 @@ public class InventoryItemController {
 
     @PutMapping
     public void moveInventoryItem(@RequestBody MoveInventoryItemRequestBody moveInventoryItemRequestBody) {
+        // TODO: add try catch for proper error handling and notification to client upon error receipt
         commandGateway.sendAndWait(
                 new MoveInventoryItemCommand(
                     moveInventoryItemRequestBody.getSku(),
