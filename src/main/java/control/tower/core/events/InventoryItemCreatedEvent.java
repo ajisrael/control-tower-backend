@@ -1,11 +1,10 @@
-package control.tower.core;
+package control.tower.core.events;
 
 import control.tower.core.valueObjects.Location;
 
 import java.util.Objects;
 
-public class InventoryItemMovedEvent {
-
+public class InventoryItemCreatedEvent {
     private final String sku;
 
     private final String name;
@@ -14,7 +13,7 @@ public class InventoryItemMovedEvent {
 
     private final double price;
 
-    public InventoryItemMovedEvent(String sku, String name, Location location, double price) {
+    public InventoryItemCreatedEvent(String sku, String name, Location location, double price) {
         this.sku = sku;
         this.name = name;
         this.location = location;
@@ -41,7 +40,7 @@ public class InventoryItemMovedEvent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InventoryItemMovedEvent that = (InventoryItemMovedEvent) o;
+        InventoryItemCreatedEvent that = (InventoryItemCreatedEvent) o;
         return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location);
     }
 
@@ -52,7 +51,7 @@ public class InventoryItemMovedEvent {
 
     @Override
     public String toString() {
-        return "InventoryItemMovedEvent{" +
+        return "InventoryItemCreatedEvent{" +
                 "sku='" + sku + '\'' +
                 ", name='" + name + '\'' +
                 ", location=" + location +

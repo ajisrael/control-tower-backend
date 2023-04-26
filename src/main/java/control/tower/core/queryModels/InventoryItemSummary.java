@@ -1,4 +1,4 @@
-package control.tower.core;
+package control.tower.core.queryModels;
 
 import control.tower.core.valueObjects.Location;
 

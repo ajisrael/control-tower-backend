@@ -4,9 +4,9 @@ import com.vaadin.annotations.Push;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-import control.tower.core.CreateInventoryItemCommand;
-import control.tower.core.InventoryItemSummary;
-import control.tower.core.MoveInventoryItemCommand;
+import control.tower.core.commands.CreateInventoryItemCommand;
+import control.tower.core.queryModels.InventoryItemSummary;
+import control.tower.core.commands.MoveInventoryItemCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 
 @SpringUI

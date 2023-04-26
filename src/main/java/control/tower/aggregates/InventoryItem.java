@@ -1,9 +1,9 @@
 package control.tower.aggregates;
 
-import control.tower.core.CreateInventoryItemCommand;
-import control.tower.core.InventoryItemCreatedEvent;
-import control.tower.core.InventoryItemMovedEvent;
-import control.tower.core.MoveInventoryItemCommand;
+import control.tower.core.commands.CreateInventoryItemCommand;
+import control.tower.core.events.InventoryItemCreatedEvent;
+import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.commands.MoveInventoryItemCommand;
 import control.tower.core.valueObjects.Location;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;

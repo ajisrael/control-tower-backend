@@ -1,4 +1,4 @@
-package control.tower.core;
+package control.tower.core.queries;
 
 public class CountInventoryItemSummariesQuery {
     public CountInventoryItemSummariesQuery() {

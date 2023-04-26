@@ -1,7 +1,10 @@
 package control.tower.projections;
 
-import control.tower.core.*;
-import control.tower.core.valueObjects.Location;
+import control.tower.core.events.InventoryItemCreatedEvent;
+import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.queries.CountInventoryItemSummariesQuery;
+import control.tower.core.queries.FindInventoryItemSummariesQuery;
+import control.tower.core.queryModels.InventoryItemSummary;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.data.domain.PageRequest;

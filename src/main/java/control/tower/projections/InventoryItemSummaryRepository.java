@@ -1,6 +1,6 @@
 package control.tower.projections;
 
-import control.tower.core.InventoryItemSummary;
+import control.tower.core.queryModels.InventoryItemSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InventoryItemSummaryRepository extends JpaRepository<InventoryItemSummary, String> {

@@ -1,7 +1,9 @@
 package control.tower.api.command.inventoryItem;
 
-import control.tower.core.CreateInventoryItemCommand;
-import control.tower.core.MoveInventoryItemCommand;
+import control.tower.api.command.inventoryItem.models.InventoryItemRequestBody;
+import control.tower.api.command.inventoryItem.models.MoveInventoryItemRequestBody;
+import control.tower.core.commands.CreateInventoryItemCommand;
+import control.tower.core.commands.MoveInventoryItemCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.*;
 

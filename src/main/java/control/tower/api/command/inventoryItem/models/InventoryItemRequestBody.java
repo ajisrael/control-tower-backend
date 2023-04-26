@@ -1,4 +1,4 @@
-package control.tower.api.command.inventoryItem;
+package control.tower.api.command.inventoryItem.models;
 
 import java.util.Objects;
 

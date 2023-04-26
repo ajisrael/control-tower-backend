@@ -1,4 +1,4 @@
-package control.tower.core;
+package control.tower.core.commands;
 
 import control.tower.core.valueObjects.Location;
 import org.axonframework.commandhandling.RoutingKey;
