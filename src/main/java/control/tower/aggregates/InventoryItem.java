@@ -10,6 +10,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import java.util.Objects;
+
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
@@ -114,5 +116,28 @@ public class InventoryItem {
 
     public InventoryItem() {
         // Required by Axon
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InventoryItem that = (InventoryItem) o;
+        return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sku, name, location, price);
+    }
+
+    @Override
+    public String toString() {
+        return "InventoryItem{" +
+                "sku='" + sku + '\'' +
+                ", name='" + name + '\'' +
+                ", location=" + location +
+                ", price=" + price +
+                '}';
     }
 }

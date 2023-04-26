@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class InventoryItemSummaryProjection {
@@ -49,5 +50,25 @@ public class InventoryItemSummaryProjection {
     @QueryHandler
     public Long handle(CountInventoryItemSummariesQuery query) {
         return inventoryItemSummaryRepository.count();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InventoryItemSummaryProjection that = (InventoryItemSummaryProjection) o;
+        return Objects.equals(inventoryItemSummaryRepository, that.inventoryItemSummaryRepository);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inventoryItemSummaryRepository);
+    }
+
+    @Override
+    public String toString() {
+        return "InventoryItemSummaryProjection{" +
+                "inventoryItemSummaryRepository=" + inventoryItemSummaryRepository +
+                '}';
     }
 }
