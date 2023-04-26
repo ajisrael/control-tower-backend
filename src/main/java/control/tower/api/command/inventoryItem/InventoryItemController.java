@@ -24,7 +24,7 @@ public class InventoryItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createInventoryItem(@RequestBody InventoryItemRequestBody inventoryItemRequestBody) {
+    public ResponseEntity<InventoryItemResponse> createInventoryItem(@RequestBody InventoryItemRequestBody inventoryItemRequestBody) {
         try {
             commandGateway.sendAndWait(
                     new CreateInventoryItemCommand(
@@ -36,30 +36,36 @@ public class InventoryItemController {
                     )
             );
             return ResponseEntity.ok(
-                    new InventoryItemResponse(true, "Inventory item created successfully")
-                            .getResponse());
+                    new InventoryItemResponse(true, "Inventory item created successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
             return ResponseEntity.badRequest().body(
-                    new InventoryItemResponse(false, "Invalid argument: " + e.getMessage())
-                            .getResponse());
+                    new InventoryItemResponse(false, "Invalid argument: " + e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new InventoryItemResponse(false, "An error occurred: " + e.getMessage())
-                            .getResponse());
+                    new InventoryItemResponse(false, "An error occurred: " + e.getMessage()));
         }
     }
 
 
     @PutMapping
-    public void moveInventoryItem(@RequestBody MoveInventoryItemRequestBody moveInventoryItemRequestBody) {
-        // TODO: add try catch for proper error handling and notification to client upon error receipt
-        commandGateway.sendAndWait(
-                new MoveInventoryItemCommand(
-                    moveInventoryItemRequestBody.getSku(),
-                    moveInventoryItemRequestBody.getLocationId(),
-                    moveInventoryItemRequestBody.getBinId()
-                )
-        );
+    public ResponseEntity<InventoryItemResponse> moveInventoryItem(@RequestBody MoveInventoryItemRequestBody moveInventoryItemRequestBody) {
+        try {
+            commandGateway.sendAndWait(
+                    new MoveInventoryItemCommand(
+                        moveInventoryItemRequestBody.getSku(),
+                        moveInventoryItemRequestBody.getLocationId(),
+                        moveInventoryItemRequestBody.getBinId()
+                    )
+            );
+            return ResponseEntity.ok(
+                    new InventoryItemResponse(true, "Inventory item moved successfully"));
+        } catch (IllegalArgumentException | CommandExecutionException e) {
+            return ResponseEntity.badRequest().body(
+                    new InventoryItemResponse(false, "Invalid argument: " + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new InventoryItemResponse(false, "An error occurred: " + e.getMessage()));
+        }
     }
 }
 
