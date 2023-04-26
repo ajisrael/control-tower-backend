@@ -40,7 +40,6 @@ public class InventoryItem {
 
     @CommandHandler
     public void handle(MoveInventoryItemCommand command) {
-        throwErrorIfSkuIsNullOrEmpty(command.getSku());
         throwErrorIfLocationIsNullOrIdsAreNullOrEmpty(command.getNewLocation());
         throwErrorIfNewLocationIsEqualToCurrentLocation(command.getNewLocation());
 
