@@ -35,4 +35,6 @@ public class ControlTowerApplication {
     // TODO: Tie in events to Kafka
 
     // TODO: Evaluate Axon Server vs RDS like PostgreSQL
+
+    // TODO: Convert storage type from XML to JSON
 }
