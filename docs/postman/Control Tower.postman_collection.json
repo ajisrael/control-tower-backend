@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "51b8e511-cab1-41d4-b75d-566dfad59944",
+		"name": "Control Tower",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8822572"
+	},
+	"item": [
+		{
+			"name": "Inventory Item",
+			"item": [
+				{
+					"name": "Create Inventory Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sku\": \"123456\",\n    \"locationId\": \"whs\",\n    \"binId\": \"101\",\n    \"name\": \"chair\",\n    \"price\": 100.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{commandApi}}/api/v1/inventoryItem",
+							"host": [
+								"{{commandApi}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventoryItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move Inventory Item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sku\": \"123456\",\n    \"locationId\": \"whs\",\n    \"binId\": \"103\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{commandApi}}/api/v1/inventoryItem",
+							"host": [
+								"{{commandApi}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventoryItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inventory Item Summary (All)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{queryApi}}/api/v1/inventoryItemSummary",
+							"host": [
+								"{{queryApi}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventoryItemSummary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inventory Item History (All)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{queryApi}}/api/v1/inventoryItemHistory",
+							"host": [
+								"{{queryApi}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventoryItemHistory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pick List",
+			"item": [
+				{
+					"name": "Create Pick List",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pickId\": \"pick_1\",\n    \"skuList\": [\n        \"123456\",\n        \"123458\"\n    ],\n    \"pickDate\": \"2023-04-29\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{commandApi}}/api/v1/pickList",
+							"host": [
+								"{{commandApi}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"pickList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
