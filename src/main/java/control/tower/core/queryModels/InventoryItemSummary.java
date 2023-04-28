@@ -20,8 +20,6 @@ public class InventoryItemSummary {
 
     private double price;
 
-    // TODO: Try to figure out a way to have a list of previous locations with a timestamp per sku
-
     public InventoryItemSummary(String sku, String name, Location currentLocation, double price) {
         this.sku = sku;
         this.name = name;
