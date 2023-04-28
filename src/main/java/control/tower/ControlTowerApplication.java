@@ -31,4 +31,8 @@ public class ControlTowerApplication {
     // TODO: Create administration endpoint to view statistics of system
 
     // TODO: Begin work on Front End
+
+    // TODO: Tie in events to Kafka
+
+    // TODO: Evaluate Axon Server vs RDS like PostgreSQL
 }
