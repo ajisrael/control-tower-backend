@@ -37,4 +37,6 @@ public class ControlTowerApplication {
     // TODO: Evaluate Axon Server vs RDS like PostgreSQL
 
     // TODO: Convert storage type from XML to JSON
+
+    // TODO: Attach codescene and/or sonarcube to this app for code analysis
 }
