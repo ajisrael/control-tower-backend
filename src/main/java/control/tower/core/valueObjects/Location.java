@@ -2,16 +2,18 @@ package control.tower.core.valueObjects;
 
 import org.axonframework.modelling.command.EntityId;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class Location {
 
     @EntityId
-    private final String locationKey;
+    private String locationKey;
     
-    private final String locationId;
+    private String locationId;
     
-    private final String binId;
+    private String binId;
 
     public Location() {
         this.locationKey = "default_location_key";
@@ -25,12 +27,32 @@ public class Location {
         this.binId = binId;
     }
 
+    public String getLocationKey() {
+        return locationKey;
+    }
+
     public String getLocationId() {
         return locationId;
     }
 
     public String getBinId() {
         return binId;
+    }
+
+    public void setLocationKey(String locationKey) {
+        this.locationKey = locationKey;
+        this.locationId = locationKey.split("_")[0];
+        this.binId = locationKey.split("_")[1];
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+        this.locationKey = locationId + "_" + this.binId;
+    }
+
+    public void setBinId(String binId) {
+        this.binId = binId;
+        this.locationKey = this.locationId + "_" + binId;
     }
 
     @Override
