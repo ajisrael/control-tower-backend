@@ -1,13 +1,10 @@
 package control.tower.core.queryModels;
 
 import control.tower.core.valueObjects.Location;
-import control.tower.core.valueObjects.LocationEntry;
 import control.tower.core.valueObjects.LocationHistory;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
