@@ -9,8 +9,6 @@ public class ControlTowerApplication {
         SpringApplication.run(ControlTowerApplication.class, args);
     }
 
-    // TODO: Implement Inventory Item History view
-
     // TODO: Create Database seeder
 
     // TODO: Create Pick List Aggregate and Query Models
