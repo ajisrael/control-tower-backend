@@ -1,8 +1,6 @@
 package control.tower.projections;
 
-import control.tower.core.events.InventoryItemMovedEvent;
-import control.tower.core.events.InventoryItemPickedEvent;
-import control.tower.core.events.PickListCreatedEvent;
+import control.tower.core.events.*;
 import control.tower.core.queries.FindPickListsQuery;
 import control.tower.core.queryModels.PickListSummary;
 import control.tower.core.valueObjects.Location;
@@ -68,6 +66,35 @@ public class PickListSummaryProjection {
             }
         }
         pickListSummaryRepository.saveAll(pickListSummaries);
+    }
+
+    @EventHandler
+    public void on(InventoryItemAddedToPickListEvent event) {
+        PickListSummary pickListSummary = pickListSummaryRepository.findById(event.getPickId()).get();
+        List<PickItemSummary> pickItemSummaryList = pickListSummary.getPickItemSummaryList();
+        Location skuLocation = inventoryItemSummaryRepository.findById(event.getSku()).get().getCurrentLocation();
+        pickItemSummaryList.add(
+                new PickItemSummary(
+                        event.getSku(),
+                        skuLocation,
+                        new PickItem(event.getSku())
+                )
+        );
+    }
+
+    @EventHandler
+    public void on(InventoryItemRemovedFromPickListEvent event) {
+        PickListSummary pickListSummary = pickListSummaryRepository.findById(event.getPickId()).get();
+        List<PickItemSummary> pickItemSummaryList = pickListSummary.getPickItemSummaryList();
+
+        for (int i = 0; i < pickItemSummaryList.size(); i++) {
+            PickItemSummary currentItem = pickItemSummaryList.get(i);
+
+            if (event.getSku() == currentItem.getSku()) {
+                pickItemSummaryList.remove(i);
+                break;
+            }
+        }
     }
 
     @EventHandler

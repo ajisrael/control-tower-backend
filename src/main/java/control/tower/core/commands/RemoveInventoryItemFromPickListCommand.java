@@ -1,14 +1,17 @@
-package control.tower.api.command.pickList.models;
+package control.tower.core.commands;
+
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.Objects;
 
-public class PickInventoryItemRequestBody {
+public class RemoveInventoryItemFromPickListCommand {
 
-    private String pickId;
+    @TargetAggregateIdentifier
+    private final String pickId;
 
-    private String sku;
+    private final String sku;
 
-    public PickInventoryItemRequestBody(String pickId, String sku) {
+    public RemoveInventoryItemFromPickListCommand(String pickId, String sku) {
         this.pickId = pickId;
         this.sku = sku;
     }
@@ -25,7 +28,7 @@ public class PickInventoryItemRequestBody {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PickInventoryItemRequestBody that = (PickInventoryItemRequestBody) o;
+        RemoveInventoryItemFromPickListCommand that = (RemoveInventoryItemFromPickListCommand) o;
         return Objects.equals(pickId, that.pickId) && Objects.equals(sku, that.sku);
     }
 
@@ -36,7 +39,7 @@ public class PickInventoryItemRequestBody {
 
     @Override
     public String toString() {
-        return "PickInventoryItemRequestBody{" +
+        return "RemoveInventoryItemFromPickListCommand{" +
                 "pickId='" + pickId + '\'' +
                 ", sku='" + sku + '\'' +
                 '}';

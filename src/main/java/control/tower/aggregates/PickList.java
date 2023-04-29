@@ -1,8 +1,12 @@
 package control.tower.aggregates;
 
+import control.tower.core.commands.AddInventoryItemToPickListCommand;
 import control.tower.core.commands.CreatePickListCommand;
 import control.tower.core.commands.PickInventoryItemCommand;
+import control.tower.core.commands.RemoveInventoryItemFromPickListCommand;
+import control.tower.core.events.InventoryItemAddedToPickListEvent;
 import control.tower.core.events.InventoryItemPickedEvent;
+import control.tower.core.events.InventoryItemRemovedFromPickListEvent;
 import control.tower.core.events.PickListCreatedEvent;
 import control.tower.core.valueObjects.PickItem;
 import org.axonframework.commandhandling.CommandHandler;
@@ -35,6 +39,7 @@ public class PickList {
     @CommandHandler
     public PickList(CreatePickListCommand command) {
         // TODO: Check that all skus in list exist and throw IllegalArgumentException if they don't
+        // TODO: Check that all skus are not currently assigned to a pick list and throw IllegalStateException if they are
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
         throwErrorIfSkuListIsEmpty(command.getSkuList());
         for (int i = 0; i < command.getSkuList().size() ; i++) {
@@ -46,10 +51,33 @@ public class PickList {
     }
 
     @CommandHandler
+    public void handle(AddInventoryItemToPickListCommand command) {
+        // TODO: Check that sku exists and throw IllegalArgumentException if it doesn't
+        // TODO: Check that all skus are not currently assigned to a pick list and throw IllegalStateException if they are
+        throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
+        throwErrorIfSkuIsNullOrEmpty(command.getSku());
+
+        apply(new InventoryItemAddedToPickListEvent(pickId, command.getSku()));
+    }
+
+    @CommandHandler
+    public void handle(RemoveInventoryItemFromPickListCommand command) {
+        // TODO: Check that sku exists and throw IllegalArgumentException if it doesn't
+        throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
+        throwErrorIfSkuIsNullOrEmpty(command.getSku());
+        // TODO: Throw error if sku is not on pick list
+
+        apply(new InventoryItemRemovedFromPickListEvent(pickId, command.getSku()));
+
+        // TODO: Automatically delete Pick list if it is the last sku in the list
+    }
+
+    @CommandHandler
     public void handle(PickInventoryItemCommand command) {
         // TODO: Check that sku exists and throw IllegalArgumentException if it doesn't
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
+        // TODO: Throw error if item is already picked
 
         apply(new InventoryItemPickedEvent(pickId, command.getSku()));
     }
@@ -66,11 +94,27 @@ public class PickList {
     }
 
     @EventSourcingHandler
+    public void on(InventoryItemAddedToPickListEvent event) {
+        itemList.add(new PickItem(event.getSku()));
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemRemovedFromPickListEvent event) {
+        for (int i = 0; i < itemList.size(); i++) {
+            if (event.getSku() == itemList.get(i).getSku()) {
+                itemList.remove(i);
+                break;
+            }
+        }
+    }
+
+    @EventSourcingHandler
     public void on(InventoryItemPickedEvent event) {
         for (int i = 0; i < itemList.size(); i++) {
             PickItem currentItem = itemList.get(i);
             if (event.getSku() == currentItem.getSku()) {
                 currentItem.setPicked(true);
+                break;
             }
         }
     }
