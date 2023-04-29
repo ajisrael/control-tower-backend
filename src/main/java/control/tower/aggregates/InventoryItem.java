@@ -27,6 +27,11 @@ public class InventoryItem {
     private double price;
 
     // TODO: Review what other fields are required for an Inventory Item
+    //  - Customer
+    //  - May not need price
+    //  - How to keep track of skus that are parts of a set?
+
+    public InventoryItem() {} // Required by Axon
 
     @CommandHandler
     public InventoryItem(CreateInventoryItemCommand command) {
@@ -93,10 +98,6 @@ public class InventoryItem {
         }
     }
 
-    private void throwErrorIfSkuAlreadyExists(String sku) {
-        // TODO: Implement this method
-    }
-
     public String getSku() {
         return sku;
     }
@@ -111,10 +112,6 @@ public class InventoryItem {
 
     public double getPrice() {
         return price;
-    }
-
-    public InventoryItem() {
-        // Required by Axon
     }
 
     @Override
