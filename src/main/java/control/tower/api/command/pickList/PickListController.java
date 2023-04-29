@@ -66,6 +66,8 @@ public class PickListController {
         }
     }
 
+    // TODO: Add endpoints and functionality to add and remove an item(s) from a pick list
+
     private Date buildDateFromString(String dateString) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {

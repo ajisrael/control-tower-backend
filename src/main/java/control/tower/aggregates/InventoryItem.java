@@ -30,6 +30,7 @@ public class InventoryItem {
     //  - Customer
     //  - May not need price
     //  - How to keep track of skus that are parts of a set?
+    //  - State field to keep track of in inventory or not?
 
     public InventoryItem() {} // Required by Axon
 
