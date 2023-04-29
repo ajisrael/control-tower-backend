@@ -3,8 +3,11 @@ package control.tower.api.command.inventoryItem.models;
 import java.util.Objects;
 
 public class MoveInventoryItemRequestBody {
+
     private String sku;
+
     private String locationId;
+
     private String binId;
 
     public MoveInventoryItemRequestBody(String sku, String locationId, String binId) {

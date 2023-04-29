@@ -3,10 +3,15 @@ package control.tower.api.command.inventoryItem.models;
 import java.util.Objects;
 
 public class InventoryItemRequestBody {
+
     private String sku;
+
     private String name;
+
     private String locationId;
+
     private String binId;
+
     private double price;
 
     public InventoryItemRequestBody(String sku, String name, String locationId, String binId, double price) {

@@ -3,6 +3,7 @@ package control.tower.api.command.inventoryItem;
 import control.tower.api.command.inventoryItem.models.InventoryItemRequestBody;
 import control.tower.api.command.inventoryItem.models.InventoryItemResponse;
 import control.tower.api.command.inventoryItem.models.MoveInventoryItemRequestBody;
+import control.tower.config.Constants;
 import control.tower.core.commands.CreateInventoryItemCommand;
 import control.tower.core.commands.MoveInventoryItemCommand;
 import org.axonframework.commandhandling.CommandExecutionException;
@@ -33,15 +34,14 @@ public class InventoryItemController {
                             inventoryItemRequestBody.getPrice()
                     )
             );
-            // TODO: Put messages/prefixes into a constants file that can be imported into the tests (Keep it DRY)
             return ResponseEntity.ok(
                     new InventoryItemResponse(true, "Inventory item created successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
             return ResponseEntity.badRequest().body(
-                    new InventoryItemResponse(false, "Invalid argument: " + e.getMessage()));
+                    new InventoryItemResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new InventoryItemResponse(false, "An error occurred: " + e.getMessage()));
+                    new InventoryItemResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
         }
     }
 
@@ -56,15 +56,14 @@ public class InventoryItemController {
                         moveInventoryItemRequestBody.getBinId()
                     )
             );
-            // TODO: Put messages/prefixes into a constants file that can be imported into the tests (Keep it DRY)
             return ResponseEntity.ok(
                     new InventoryItemResponse(true, "Inventory item moved successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
             return ResponseEntity.badRequest().body(
-                    new InventoryItemResponse(false, "Invalid argument: " + e.getMessage()));
+                    new InventoryItemResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new InventoryItemResponse(false, "An error occurred: " + e.getMessage()));
+                    new InventoryItemResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
         }
     }
 }
