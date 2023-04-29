@@ -6,7 +6,6 @@ import control.tower.core.events.InventoryItemPickedEvent;
 import control.tower.core.events.PickListCreatedEvent;
 import control.tower.core.valueObjects.PickItem;
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
@@ -29,21 +28,28 @@ public class PickList {
     private Date pickDate;
 
     // TODO: Add additional fields:
-    //  - PickState state { completed: boolean, timestamp: Instant }
+    //  - boolean completed
 
     public PickList() {} // Required by Axon
 
     @CommandHandler
     public PickList(CreatePickListCommand command) {
-        // TODO: Add validation for command
-        // TODO: Check that all skus in list exist and
-        //  throw IllegalStateException if they don't
+        // TODO: Check that all skus in list exist and throw IllegalArgumentException if they don't
+        throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
+        throwErrorIfSkuListIsEmpty(command.getSkuList());
+        for (int i = 0; i < command.getSkuList().size() ; i++) {
+            throwErrorIfSkuIsNullOrEmpty(command.getSkuList().get(i));
+        }
+        throwErrorIfDateIsNull(command.getPickDate());
 
         apply(new PickListCreatedEvent(command.getPickId(), command.getSkuList(), command.getPickDate()));
     }
 
     @CommandHandler
     public void handle(PickInventoryItemCommand command) {
+        // TODO: Check that sku exists and throw IllegalArgumentException if it doesn't
+        throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
+        throwErrorIfSkuIsNullOrEmpty(command.getSku());
 
         apply(new InventoryItemPickedEvent(pickId, command.getSku()));
     }
@@ -66,6 +72,38 @@ public class PickList {
             if (event.getSku() == currentItem.getSku()) {
                 currentItem.setPicked(true);
             }
+        }
+    }
+
+    // TODO: Write a helper method to match skus on regex to keep consistent format
+    //   in corresponding validation method.
+
+    // TODO: Move method to a utility or helper package to keep DRY with other aggregates
+    private boolean isNullOrEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
+    private void throwErrorIfPickIdIsNullOrEmpty(String pickId) {
+        if (isNullOrEmpty(pickId)) {
+            throw new IllegalArgumentException("PickId cannot be null or empty");
+        }
+    }
+
+    private void throwErrorIfSkuListIsEmpty(List<String> skuList) {
+        if (skuList.size() == 0) {
+            throw new IllegalArgumentException("Must have at least one sku in pick list");
+        }
+    }
+
+    private void throwErrorIfSkuIsNullOrEmpty(String sku) {
+        if (isNullOrEmpty(sku)) {
+            throw new IllegalArgumentException("Sku cannot be null or empty");
+        }
+    }
+
+    private void throwErrorIfDateIsNull(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
         }
     }
 
