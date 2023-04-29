@@ -1,7 +1,10 @@
 package control.tower.aggregates;
 
 import control.tower.core.commands.CreatePickListCommand;
+import control.tower.core.commands.PickInventoryItemCommand;
+import control.tower.core.events.InventoryItemPickedEvent;
 import control.tower.core.events.PickListCreatedEvent;
+import org.axonframework.modelling.command.IdentifierMissingException;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.jupiter.api.AfterEach;
@@ -85,6 +88,34 @@ public class PickListTest {
     void shouldNotCreatePickListWhenDateIsNull() {
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, null))
+                .expectException(IllegalArgumentException.class);
+    }
+
+    @Test
+    void shouldPickInventoryItem() {
+        fixture.given(new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE))
+                .when(new PickInventoryItemCommand(PICK_ID, SKU))
+                .expectEvents(new InventoryItemPickedEvent(PICK_ID, SKU));
+    }
+
+    @Test
+    void shouldNotPickInventoryItemWhenPickIdIsNull() {
+        fixture.given(new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE))
+                .when(new PickInventoryItemCommand(null, SKU))
+                .expectException(IdentifierMissingException.class);
+    }
+
+    @Test
+    void shouldNotPickInventoryItemWhenSkuIsNull() {
+        fixture.given(new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE))
+                .when(new PickInventoryItemCommand(PICK_ID, null))
+                .expectException(IllegalArgumentException.class);
+    }
+
+    @Test
+    void shouldNotPickInventoryItemWhenSkuIsEmpty() {
+        fixture.given(new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE))
+                .when(new PickInventoryItemCommand(PICK_ID, ""))
                 .expectException(IllegalArgumentException.class);
     }
 }
