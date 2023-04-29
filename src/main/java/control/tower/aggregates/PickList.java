@@ -11,6 +11,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -27,18 +28,7 @@ public class PickList {
     // TODO: Add additional fields:
     //  - PickState state { completed: boolean, timestamp: Instant }
 
-    public PickList(String pickId, List<String> skuList, Date pickDate) {
-        this.pickId = pickId;
-        this.pickDate = pickDate;
-        this.itemList = new ArrayList<>();
-
-        for(int i=0; i<skuList.size(); i++) {
-            this.itemList.add(new PickItem(skuList.get(i)));
-        }
-    }
-
-    public PickList() {
-    }
+    public PickList() {} // Required by Axon
 
     @CommandHandler
     public PickList(CreatePickListCommand command) {
@@ -54,7 +44,6 @@ public class PickList {
         pickId = event.getPickId();
         pickDate = event.getPickDate();
 
-        // TODO: try to move this to private method to avoid repeat in constructor
         itemList = new ArrayList<>();
         for (int i = 0; i < event.getSkuList().size(); i++) {
             itemList.add(new PickItem(event.getSkuList().get(i)));
@@ -83,5 +72,27 @@ public class PickList {
 
     public void setPickDate(Date pickDate) {
         this.pickDate = pickDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PickList pickList = (PickList) o;
+        return Objects.equals(pickId, pickList.pickId) && Objects.equals(itemList, pickList.itemList) && Objects.equals(pickDate, pickList.pickDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pickId, itemList, pickDate);
+    }
+
+    @Override
+    public String toString() {
+        return "PickList{" +
+                "pickId='" + pickId + '\'' +
+                ", itemList=" + itemList +
+                ", pickDate=" + pickDate +
+                '}';
     }
 }
