@@ -26,6 +26,7 @@ public class PickListTest {
 
     @BeforeEach
     void setup() {
+        SKU_LIST.add(SKU);
         fixture = new AggregateTestFixture<>(PickList.class);
     }
 
@@ -37,7 +38,6 @@ public class PickListTest {
     @Test
     void shouldCreatePickList() {
         // TODO: Will need to update once InventoryItem check is in place
-        SKU_LIST.add(SKU);
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, DATE))
                 .expectEvents(new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE));
@@ -45,7 +45,6 @@ public class PickListTest {
 
     @Test
     void shouldNotCreatePickListWhenPickIdIsNull() {
-        SKU_LIST.add(SKU);
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(null, SKU_LIST, DATE))
                 .expectException(IllegalArgumentException.class);
@@ -53,7 +52,6 @@ public class PickListTest {
 
     @Test
     void shouldNotCreatePickListWhenPickIdIsEmpty() {
-        SKU_LIST.add(SKU);
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand("", SKU_LIST, DATE))
                 .expectException(IllegalArgumentException.class);
@@ -61,7 +59,6 @@ public class PickListTest {
 
     @Test
     void shouldNotCreatePickListWhenASkuInListIsNull() {
-        SKU_LIST.add(SKU);
         SKU_LIST.add(null);
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, DATE))
@@ -70,7 +67,6 @@ public class PickListTest {
 
     @Test
     void shouldNotCreatePickListWhenASkuInListIsEmpty() {
-        SKU_LIST.add(SKU);
         SKU_LIST.add("");
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, DATE))
@@ -79,6 +75,7 @@ public class PickListTest {
 
     @Test
     void shouldNotCreatePickListWhenSkuListIsEmpty() {
+        SKU_LIST = new ArrayList<>();
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, DATE))
                 .expectException(IllegalArgumentException.class);
@@ -86,7 +83,6 @@ public class PickListTest {
 
     @Test
     void shouldNotCreatePickListWhenDateIsNull() {
-        SKU_LIST.add(SKU);
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, null))
                 .expectException(IllegalArgumentException.class);
