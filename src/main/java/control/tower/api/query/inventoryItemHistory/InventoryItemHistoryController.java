@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/v1/inventoryItemHistory")
 public class InventoryItemHistoryController {
+
     private final QueryGateway queryGateway;
 
     public InventoryItemHistoryController(QueryGateway queryGateway) {

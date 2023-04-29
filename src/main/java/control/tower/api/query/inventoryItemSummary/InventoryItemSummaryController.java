@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/v1/inventoryItemSummary")
 public class InventoryItemSummaryController {
+
     private final QueryGateway queryGateway;
 
     public InventoryItemSummaryController(QueryGateway queryGateway) {

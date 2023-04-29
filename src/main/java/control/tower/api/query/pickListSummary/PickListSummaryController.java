@@ -1,8 +1,6 @@
 package control.tower.api.query.pickListSummary;
 
-import control.tower.core.queries.FindInventoryItemSummariesQuery;
 import control.tower.core.queries.FindPickListsQuery;
-import control.tower.core.queryModels.InventoryItemSummary;
 import control.tower.core.queryModels.PickListSummary;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -16,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/v1/pickListSummary")
 public class PickListSummaryController {
+
     private final QueryGateway queryGateway;
 
     public PickListSummaryController(QueryGateway queryGateway) {
