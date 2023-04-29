@@ -1,17 +1,16 @@
 package control.tower.api.command.pickList;
 
+import control.tower.api.command.pickList.models.PickInventoryItemRequestBody;
 import control.tower.api.command.pickList.models.PickListRequestBody;
 import control.tower.api.command.pickList.models.PickListResponse;
 import control.tower.config.Constants;
 import control.tower.core.commands.CreatePickListCommand;
+import control.tower.core.commands.PickInventoryItemCommand;
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,6 +37,26 @@ public class PickListController {
             );
             return ResponseEntity.ok(
                     new PickListResponse(true, "Pick list created successfully"));
+        } catch (IllegalArgumentException | CommandExecutionException e) {
+            return ResponseEntity.badRequest().body(
+                    new PickListResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new PickListResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<PickListResponse> pickInventoryItem(@RequestBody PickInventoryItemRequestBody pickInventoryItemRequestBody) {
+        try {
+            commandGateway.sendAndWait(
+                    new PickInventoryItemCommand(
+                            pickInventoryItemRequestBody.getPickId(),
+                            pickInventoryItemRequestBody.getSku()
+                    )
+            );
+            return ResponseEntity.ok(
+                    new PickListResponse(true, "Inventory item picked successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
             return ResponseEntity.badRequest().body(
                     new PickListResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));

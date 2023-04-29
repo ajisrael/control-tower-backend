@@ -1,10 +1,13 @@
 package control.tower.aggregates;
 
 import control.tower.core.commands.CreatePickListCommand;
+import control.tower.core.commands.PickInventoryItemCommand;
+import control.tower.core.events.InventoryItemPickedEvent;
 import control.tower.core.events.PickListCreatedEvent;
 import control.tower.core.valueObjects.PickItem;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
@@ -39,7 +42,13 @@ public class PickList {
         apply(new PickListCreatedEvent(command.getPickId(), command.getSkuList(), command.getPickDate()));
     }
 
-    @EventHandler
+    @CommandHandler
+    public void handle(PickInventoryItemCommand command) {
+
+        apply(new InventoryItemPickedEvent(pickId, command.getSku()));
+    }
+
+    @EventSourcingHandler
     public void on(PickListCreatedEvent event) {
         pickId = event.getPickId();
         pickDate = event.getPickDate();
@@ -47,6 +56,16 @@ public class PickList {
         itemList = new ArrayList<>();
         for (int i = 0; i < event.getSkuList().size(); i++) {
             itemList.add(new PickItem(event.getSkuList().get(i)));
+        }
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemPickedEvent event) {
+        for (int i = 0; i < itemList.size(); i++) {
+            PickItem currentItem = itemList.get(i);
+            if (event.getSku() == currentItem.getSku()) {
+                currentItem.setPicked(true);
+            }
         }
     }
 
