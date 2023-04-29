@@ -5,6 +5,7 @@ import control.tower.core.valueObjects.Location;
 import java.util.Objects;
 
 public class InventoryItemCreatedEvent {
+
     private final String sku;
 
     private final String name;
