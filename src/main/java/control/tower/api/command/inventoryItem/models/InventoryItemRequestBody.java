@@ -65,4 +65,5 @@ public class InventoryItemRequestBody {
                 ", price=" + price +
                 '}';
     }
+
 }

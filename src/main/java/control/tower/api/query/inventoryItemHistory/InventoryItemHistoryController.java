@@ -29,4 +29,5 @@ public class InventoryItemHistoryController {
                 ResponseTypes.multipleInstancesOf(InventoryItemHistory.class)
         ).join();
     }
+
 }

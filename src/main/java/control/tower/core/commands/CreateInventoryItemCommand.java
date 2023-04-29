@@ -9,8 +9,11 @@ public class CreateInventoryItemCommand {
 
     @RoutingKey
     private final String sku;
+
     private final Location location;
+
     private final String name;
+
     private final double price;
 
     public CreateInventoryItemCommand(String sku, String locationId, String binId, String name, double price) {
@@ -65,4 +68,5 @@ public class CreateInventoryItemCommand {
                 ", price=" + price +
                 '}';
     }
+
 }

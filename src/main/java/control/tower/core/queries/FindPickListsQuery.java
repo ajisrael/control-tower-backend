@@ -48,4 +48,5 @@ public class FindPickListsQuery {
                 ", limit=" + limit +
                 '}';
     }
+
 }

@@ -136,4 +136,5 @@ public class InventoryItem {
                 ", price=" + price +
                 '}';
     }
+
 }

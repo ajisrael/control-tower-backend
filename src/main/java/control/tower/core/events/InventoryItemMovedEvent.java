@@ -59,4 +59,5 @@ public class InventoryItemMovedEvent {
                 ", price=" + price +
                 '}';
     }
+
 }

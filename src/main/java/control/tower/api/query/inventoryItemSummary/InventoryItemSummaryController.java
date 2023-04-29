@@ -29,4 +29,5 @@ public class InventoryItemSummaryController {
                 ResponseTypes.multipleInstancesOf(InventoryItemSummary.class)
         ).join();
     }
+
 }

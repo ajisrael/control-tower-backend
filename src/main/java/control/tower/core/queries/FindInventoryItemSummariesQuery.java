@@ -50,4 +50,5 @@ public class FindInventoryItemSummariesQuery {
                 ", limit=" + limit +
                 '}';
     }
+
 }

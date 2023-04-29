@@ -95,4 +95,5 @@ public class PickList {
                 ", pickDate=" + pickDate +
                 '}';
     }
+
 }

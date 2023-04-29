@@ -51,4 +51,5 @@ public class PickListCreatedEvent {
                 ", pickDate=" + pickDate +
                 '}';
     }
+
 }

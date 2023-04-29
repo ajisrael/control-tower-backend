@@ -8,4 +8,5 @@ public class CountInventoryItemSummariesQuery {
     public String toString() {
         return "CountInventoryItemSummariesQuery{}";
     }
+
 }

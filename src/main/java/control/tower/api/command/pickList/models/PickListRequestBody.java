@@ -51,4 +51,5 @@ public class PickListRequestBody {
                 ", pickDate='" + pickDate + '\'' +
                 '}';
     }
+
 }

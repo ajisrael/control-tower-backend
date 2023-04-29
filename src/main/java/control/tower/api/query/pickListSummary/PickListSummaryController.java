@@ -29,4 +29,5 @@ public class PickListSummaryController {
                 ResponseTypes.multipleInstancesOf(PickListSummary.class)
         ).join();
     }
+
 }

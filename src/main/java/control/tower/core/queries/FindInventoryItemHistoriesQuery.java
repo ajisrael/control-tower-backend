@@ -45,4 +45,5 @@ public class FindInventoryItemHistoriesQuery {
                 ", limit=" + limit +
                 '}';
     }
+
 }
