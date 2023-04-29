@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class PickListRequestBody {
+
     private String pickId;
+
     private List<String> skuList;
+
     private String pickDate;
 
     public PickListRequestBody(String pickId, ArrayList<String> skuList, String pickDate) {

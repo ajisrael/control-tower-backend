@@ -1,10 +1,9 @@
 package control.tower.api.command.pickList;
 
-import control.tower.api.command.inventoryItem.models.InventoryItemResponse;
 import control.tower.api.command.pickList.models.PickListRequestBody;
 import control.tower.api.command.pickList.models.PickListResponse;
+import control.tower.config.Constants;
 import control.tower.core.commands.CreatePickListCommand;
-import control.tower.core.events.PickListCreatedEvent;
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
@@ -37,16 +36,14 @@ public class PickListController {
                             buildDateFromString(pickListRequestBody.getPickDate())
                     )
             );
-
             return ResponseEntity.ok(
-                    new PickListResponse(true, "Pick list created successfully")
-            );
+                    new PickListResponse(true, "Pick list created successfully"));
         } catch (IllegalArgumentException | CommandExecutionException e) {
             return ResponseEntity.badRequest().body(
-                    new PickListResponse(false, "Invalid argument: " + e.getMessage()));
+                    new PickListResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new PickListResponse(false, "An error occurred: " + e.getMessage()));
+                    new PickListResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
         }
     }
 
