@@ -5,6 +5,7 @@ import java.util.Objects;
 public class FindInventoryItemSummariesQuery {
 
     private final int offset;
+
     private final int limit;
 
     public FindInventoryItemSummariesQuery(int offset, int limit) {

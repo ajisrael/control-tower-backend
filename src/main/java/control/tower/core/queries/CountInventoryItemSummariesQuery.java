@@ -1,11 +1,11 @@
 package control.tower.core.queries;
 
 public class CountInventoryItemSummariesQuery {
-    public CountInventoryItemSummariesQuery() {
-    }
+
+    public CountInventoryItemSummariesQuery() {}
 
     @Override
     public String toString() {
-        return "CountCardSummariesQuery";
+        return "CountInventoryItemSummariesQuery{}";
     }
 }

@@ -5,6 +5,7 @@ import java.util.Objects;
 public class FindInventoryItemHistoriesQuery {
 
     private final int offset;
+
     private final int limit;
 
     public FindInventoryItemHistoriesQuery(int offset, int limit) {
@@ -25,14 +26,6 @@ public class FindInventoryItemHistoriesQuery {
     }
 
     @Override
-    public String toString() {
-        return "FindInventoryItemHistoriesQuery{" +
-                "offset=" + offset +
-                ", limit=" + limit +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -43,5 +36,13 @@ public class FindInventoryItemHistoriesQuery {
     @Override
     public int hashCode() {
         return Objects.hash(offset, limit);
+    }
+
+    @Override
+    public String toString() {
+        return "FindInventoryItemHistoriesQuery{" +
+                "offset=" + offset +
+                ", limit=" + limit +
+                '}';
     }
 }
