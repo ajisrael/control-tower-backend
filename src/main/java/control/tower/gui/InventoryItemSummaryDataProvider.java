@@ -20,4 +20,5 @@ public class InventoryItemSummaryDataProvider extends CallbackDataProvider<Inven
                 q -> queryGateway.query(new CountInventoryItemSummariesQuery(), Long.class).join().intValue()
         );
     }
+
 }

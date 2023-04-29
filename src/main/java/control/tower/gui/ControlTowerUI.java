@@ -103,8 +103,10 @@ public class ControlTowerUI extends UI {
         ).setCaption("Current Location");
 
         // TODO: Try to adjust the size of the summary grid to better fit the test page
+
         grid.setSizeFull();
         grid.setDataProvider(inventoryItemSummaryDataProvider);
         return new VerticalLayout(grid, new Button("Refresh", e -> inventoryItemSummaryDataProvider.refreshAll()));
     }
+
 }
