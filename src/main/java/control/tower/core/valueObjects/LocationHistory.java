@@ -1,6 +1,9 @@
 package control.tower.core.valueObjects;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.OrderBy;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +16,15 @@ public class LocationHistory {
     @OrderBy("timestamp DESC")
     private List<LocationEntry> locations = new ArrayList<>();
 
-    public void addLocation(Location location, Instant timestamp) {
-        locations.add(new LocationEntry(location, timestamp));
-    }
+    public LocationHistory() {}
 
     public List<LocationEntry> getLocations() {
         return locations;
     }
 
-    @Override
-    public String toString() {
-        return "LocationHistory{" +
-                "locations=" + locations +
-                '}';
+    public void addLocation(Location location, Instant timestamp) {
+        locations.add(new LocationEntry(location, timestamp));
     }
-
-    public LocationHistory() {}
 
     @Override
     public boolean equals(Object o) {
@@ -42,4 +38,12 @@ public class LocationHistory {
     public int hashCode() {
         return Objects.hash(locations);
     }
+
+    @Override
+    public String toString() {
+        return "LocationHistory{" +
+                "locations=" + locations +
+                '}';
+    }
+
 }

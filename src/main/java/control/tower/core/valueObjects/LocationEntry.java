@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Embeddable
 public class LocationEntry {
+
     private final Location location;
     private final Instant timestamp;
 
@@ -52,4 +53,5 @@ public class LocationEntry {
                 ", timestamp=" + timestamp +
                 '}';
     }
+
 }

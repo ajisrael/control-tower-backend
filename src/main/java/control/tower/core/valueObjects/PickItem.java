@@ -36,14 +36,6 @@ public class PickItem {
     }
 
     @Override
-    public String toString() {
-        return "PickItem{" +
-                "sku='" + sku + '\'' +
-                ", picked=" + picked +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -55,4 +47,13 @@ public class PickItem {
     public int hashCode() {
         return Objects.hash(sku, picked);
     }
+
+    @Override
+    public String toString() {
+        return "PickItem{" +
+                "sku='" + sku + '\'' +
+                ", picked=" + picked +
+                '}';
+    }
+
 }
