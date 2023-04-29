@@ -2,8 +2,10 @@ package control.tower.core.valueObjects;
 
 import org.axonframework.modelling.command.EntityId;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class PickItem {
 
     @EntityId
