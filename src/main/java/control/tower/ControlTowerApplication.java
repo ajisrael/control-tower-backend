@@ -39,4 +39,8 @@ public class ControlTowerApplication {
     // TODO: Convert storage type from XML to JSON
 
     // TODO: Attach codescene and/or sonarcube to this app for code analysis
+
+    // TODO: Add logging to rest endpoints for all transactions
+
+    // TODO: Add request id's to rest endpoints and cache them for idempotency
 }
