@@ -50,16 +50,6 @@ public class InventoryItemSummary {
     }
 
     @Override
-    public String toString() {
-        return "InventoryItemSummary{" +
-                "sku='" + sku + '\'' +
-                ", name='" + name + '\'' +
-                ", currentLocation=" + currentLocation +
-                ", price=" + price +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -70,6 +60,16 @@ public class InventoryItemSummary {
     @Override
     public int hashCode() {
         return Objects.hash(sku, name, currentLocation, price);
+    }
+
+    @Override
+    public String toString() {
+        return "InventoryItemSummary{" +
+                "sku='" + sku + '\'' +
+                ", name='" + name + '\'' +
+                ", currentLocation=" + currentLocation +
+                ", price=" + price +
+                '}';
     }
 
 }

@@ -2,7 +2,11 @@ package control.tower.core.queryModels;
 
 import control.tower.core.valueObjects.PickItemSummary;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OrderBy;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,14 +45,6 @@ public class PickListSummary {
     }
 
     @Override
-    public String toString() {
-        return "PickListSummary{" +
-                "pickId='" + pickId + '\'' +
-                ", pickItemSummaryList=" + pickItemSummaryList +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -60,4 +56,13 @@ public class PickListSummary {
     public int hashCode() {
         return Objects.hash(pickId, pickItemSummaryList);
     }
+
+    @Override
+    public String toString() {
+        return "PickListSummary{" +
+                "pickId='" + pickId + '\'' +
+                ", pickItemSummaryList=" + pickItemSummaryList +
+                '}';
+    }
+
 }
