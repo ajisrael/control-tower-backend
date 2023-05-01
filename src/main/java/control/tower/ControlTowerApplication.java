@@ -12,6 +12,16 @@ public class ControlTowerApplication {
     // TODO: Create Database seeder
 
     // TODO: Create Pick List Aggregate and Query Models
+    //  need to adjust aggregates as follows:
+    //    - have picklist aggregate only keep track of high level state, may still be able to use sku list
+    //    - each inventory item aggregate will have a pick list id to map it to for the projection
+    //    - on create pick list command, issue a add to pick list command for each item,
+    //      and throw errors for any items that don't exist before issuing the pick list created event
+    //          - make sure pick list created event contains list of skus
+    //    - for the pick list summary projection, on pick list created event loop through skus to get
+    //      required data from inventory item summary projection
+    //    - issue add to and remove from pick list commands in pick list aggregate
+    //    - handle add to and remove from pick list events in inventory item
 
     // TODO: Create Order Aggregate and Query Models
 
