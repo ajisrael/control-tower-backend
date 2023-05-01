@@ -1,4 +1,4 @@
-package control.tower.projections;
+package control.tower.core.projections;
 
 import control.tower.core.queryModels.InventoryItemSummary;
 import org.springframework.data.jpa.repository.JpaRepository;

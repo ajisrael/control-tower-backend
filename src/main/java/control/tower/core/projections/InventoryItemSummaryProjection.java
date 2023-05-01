@@ -1,4 +1,4 @@
-package control.tower.projections;
+package control.tower.core.projections;
 
 import control.tower.core.events.InventoryItemCreatedEvent;
 import control.tower.core.events.InventoryItemMovedEvent;
@@ -21,6 +21,11 @@ public class InventoryItemSummaryProjection {
 
     public InventoryItemSummaryProjection(InventoryItemSummaryRepository inventoryItemSummaryRepository) {
         this.inventoryItemSummaryRepository = inventoryItemSummaryRepository;
+    }
+
+    public boolean doesInventoryItemExist(String sku) {
+        //return inventoryItemSummaryRepository.findById(sku).isPresent();
+        return true;
     }
 
     @EventHandler

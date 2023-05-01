@@ -1,4 +1,4 @@
-package control.tower.projections;
+package control.tower.core.projections;
 
 import control.tower.core.events.*;
 import control.tower.core.queries.FindPickListsQuery;
