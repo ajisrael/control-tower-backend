@@ -10,18 +10,19 @@ public class PickItemSummary {
     @Column(name = "pick_item_sku")
     private String sku;
 
-    private Location location;
+    private String locationId;
 
-    private PickItem pickItem;
+    private String binId;
 
-    public PickItemSummary(String sku, Location location, PickItem pickItem) {
+    private boolean picked = false;
+
+    public PickItemSummary(String sku, Location location) {
         this.sku = sku;
-        this.location = location;
-        this.pickItem = pickItem;
+        this.locationId = location.getLocationId();
+        this.binId = location.getBinId();
     }
 
-    public PickItemSummary() {
-    }
+    public PickItemSummary() {}
 
     public String getSku() {
         return sku;
@@ -31,42 +32,27 @@ public class PickItemSummary {
         this.sku = sku;
     }
 
-    public Location getLocation() {
-        return location;
+    public String getLocationId() {
+        return locationId;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
     }
 
-    public PickItem getPickItem() {
-        return pickItem;
+    public String getBinId() {
+        return binId;
     }
 
-    public void setPickItem(PickItem pickItem) {
-        this.pickItem = pickItem;
+    public void setBinId(String binId) {
+        this.binId = binId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PickItemSummary that = (PickItemSummary) o;
-        return Objects.equals(sku, that.sku) && Objects.equals(location, that.location) && Objects.equals(pickItem, that.pickItem);
+    public boolean getPicked() {
+        return picked;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(sku, location, pickItem);
+    public void setPicked(boolean picked) {
+        this.picked = picked;
     }
-
-    @Override
-    public String toString() {
-        return "PickItemSummary{" +
-                "sku='" + sku + '\'' +
-                ", location=" + location +
-                ", pickItem=" + pickItem +
-                '}';
-    }
-
 }

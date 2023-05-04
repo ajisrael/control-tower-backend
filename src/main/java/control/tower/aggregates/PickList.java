@@ -4,17 +4,12 @@ import control.tower.core.commands.AddInventoryItemToPickListCommand;
 import control.tower.core.commands.CreatePickListCommand;
 import control.tower.core.commands.PickInventoryItemCommand;
 import control.tower.core.commands.RemoveInventoryItemFromPickListCommand;
-import control.tower.core.events.InventoryItemAddedToPickListEvent;
-import control.tower.core.events.InventoryItemPickedEvent;
-import control.tower.core.events.InventoryItemRemovedFromPickListEvent;
-import control.tower.core.events.PickListCreatedEvent;
-import control.tower.core.valueObjects.PickItem;
+import control.tower.core.events.*;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +22,7 @@ public class PickList {
     @AggregateIdentifier
     private String pickId;
 
-    private List<PickItem> itemList;
+    private int itemCount;
 
     private Date pickDate;
 
@@ -38,16 +33,20 @@ public class PickList {
 
     @CommandHandler
     public PickList(CreatePickListCommand command) {
-        // TODO: Check that all skus in list exist and throw IllegalArgumentException if they don't
         // TODO: Check that all skus are not currently assigned to a pick list and throw IllegalStateException if they are
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
         throwErrorIfSkuListIsEmpty(command.getSkuList());
+        throwErrorIfDateIsNull(command.getPickDate());
+
         for (int i = 0; i < command.getSkuList().size() ; i++) {
             throwErrorIfSkuIsNullOrEmpty(command.getSkuList().get(i));
         }
-        throwErrorIfDateIsNull(command.getPickDate());
 
         apply(new PickListCreatedEvent(command.getPickId(), command.getSkuList(), command.getPickDate()));
+
+        for (int i = 0; i < command.getSkuList().size(); i++) {
+            apply(new InventoryItemAddedToPickListEvent(command.getPickId(), command.getSkuList().get(i)));
+        }
     }
 
     @CommandHandler
@@ -65,7 +64,6 @@ public class PickList {
         // TODO: Check that sku exists and throw IllegalArgumentException if it doesn't
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
-        // TODO: Throw error if sku is not on pick list
 
         apply(new InventoryItemRemovedFromPickListEvent(pickId, command.getSku()));
 
@@ -86,36 +84,19 @@ public class PickList {
     public void on(PickListCreatedEvent event) {
         pickId = event.getPickId();
         pickDate = event.getPickDate();
-
-        itemList = new ArrayList<>();
-        for (int i = 0; i < event.getSkuList().size(); i++) {
-            itemList.add(new PickItem(event.getSkuList().get(i)));
-        }
+        itemCount = event.getSkuList().size();
     }
 
     @EventSourcingHandler
     public void on(InventoryItemAddedToPickListEvent event) {
-        itemList.add(new PickItem(event.getSku()));
+        itemCount++;
     }
 
     @EventSourcingHandler
     public void on(InventoryItemRemovedFromPickListEvent event) {
-        for (int i = 0; i < itemList.size(); i++) {
-            if (event.getSku() == itemList.get(i).getSku()) {
-                itemList.remove(i);
-                break;
-            }
-        }
-    }
-
-    @EventSourcingHandler
-    public void on(InventoryItemPickedEvent event) {
-        for (int i = 0; i < itemList.size(); i++) {
-            PickItem currentItem = itemList.get(i);
-            if (event.getSku() == currentItem.getSku()) {
-                currentItem.setPicked(true);
-                break;
-            }
+        itemCount--;
+        if (itemCount == 0) {
+            apply(new PickListDeletedEvent(pickId));
         }
     }
 
@@ -159,14 +140,6 @@ public class PickList {
         this.pickId = pickId;
     }
 
-    public List<PickItem> getItemList() {
-        return itemList;
-    }
-
-    public void setItemList(List<PickItem> itemList) {
-        this.itemList = itemList;
-    }
-
     public Date getPickDate() {
         return pickDate;
     }
@@ -175,26 +148,33 @@ public class PickList {
         this.pickDate = pickDate;
     }
 
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PickList pickList = (PickList) o;
-        return Objects.equals(pickId, pickList.pickId) && Objects.equals(itemList, pickList.itemList) && Objects.equals(pickDate, pickList.pickDate);
+        return itemCount == pickList.itemCount && Objects.equals(pickId, pickList.pickId) && Objects.equals(pickDate, pickList.pickDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pickId, itemList, pickDate);
+        return Objects.hash(pickId, itemCount, pickDate);
     }
 
     @Override
     public String toString() {
         return "PickList{" +
                 "pickId='" + pickId + '\'' +
-                ", itemList=" + itemList +
+                ", itemCount=" + itemCount +
                 ", pickDate=" + pickDate +
                 '}';
     }
-
 }

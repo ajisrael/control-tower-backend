@@ -1,7 +1,6 @@
 package control.tower.core.projections;
 
-import control.tower.core.events.InventoryItemCreatedEvent;
-import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.events.*;
 import control.tower.core.queries.CountInventoryItemSummariesQuery;
 import control.tower.core.queries.FindInventoryItemSummariesQuery;
 import control.tower.core.queryModels.InventoryItemSummary;
@@ -23,11 +22,6 @@ public class InventoryItemSummaryProjection {
         this.inventoryItemSummaryRepository = inventoryItemSummaryRepository;
     }
 
-    public boolean doesInventoryItemExist(String sku) {
-        //return inventoryItemSummaryRepository.findById(sku).isPresent();
-        return true;
-    }
-
     @EventHandler
     public void on(InventoryItemCreatedEvent event) {
         inventoryItemSummaryRepository.save(
@@ -39,7 +33,38 @@ public class InventoryItemSummaryProjection {
     public void on(InventoryItemMovedEvent event) {
         inventoryItemSummaryRepository.findById(event.getSku()).ifPresent(
                 inventoryItemSummary -> {
-                    inventoryItemSummary.setCurrentLocation(event.getLocation());
+                    inventoryItemSummary.setLocationId(event.getLocation().getLocationId());
+                    inventoryItemSummary.setBinId(event.getLocation().getBinId());
+                    inventoryItemSummaryRepository.save(inventoryItemSummary);
+                }
+        );
+    }
+
+    @EventHandler
+    public void on(InventoryItemAddedToPickListEvent event) {
+        inventoryItemSummaryRepository.findById(event.getSku()).ifPresent(
+                inventoryItemSummary -> {
+                    inventoryItemSummary.setPickId(event.getPickId());
+                    inventoryItemSummaryRepository.save(inventoryItemSummary);
+                }
+        );
+    }
+
+    @EventHandler
+    public void on(InventoryItemRemovedFromPickListEvent event) {
+        inventoryItemSummaryRepository.findById(event.getSku()).ifPresent(
+                inventoryItemSummary -> {
+                    inventoryItemSummary.setPickId(null);
+                    inventoryItemSummaryRepository.save(inventoryItemSummary);
+                }
+        );
+    }
+
+    @EventHandler
+    public void on(InventoryItemPickedEvent event) {
+        inventoryItemSummaryRepository.findById(event.getSku()).ifPresent(
+                inventoryItemSummary -> {
+                    inventoryItemSummary.setPicked(true);
                     inventoryItemSummaryRepository.save(inventoryItemSummary);
                 }
         );

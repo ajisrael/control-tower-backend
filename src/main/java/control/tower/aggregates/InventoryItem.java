@@ -1,8 +1,7 @@
 package control.tower.aggregates;
 
 import control.tower.core.commands.CreateInventoryItemCommand;
-import control.tower.core.events.InventoryItemCreatedEvent;
-import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.events.*;
 import control.tower.core.commands.MoveInventoryItemCommand;
 import control.tower.core.valueObjects.Location;
 import org.axonframework.commandhandling.CommandHandler;
@@ -25,6 +24,10 @@ public class InventoryItem {
     private Location location;
 
     private double price;
+
+    private String pickId = null;
+
+    private boolean picked = false;
 
     // TODO: Review what other fields are required for an Inventory Item
     //  - Customer
@@ -63,6 +66,25 @@ public class InventoryItem {
     @EventSourcingHandler
     public void on(InventoryItemMovedEvent event) {
         location = event.getLocation();
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemAddedToPickListEvent event) {
+        pickId = event.getPickId();
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemRemovedFromPickListEvent event) {
+        if (sku == event.getSku()) {
+            pickId = null;
+        }
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemPickedEvent event) {
+        if (sku == event.getSku()) {
+            picked = true;
+        }
     }
 
     private boolean isNullOrEmpty(String string) {
@@ -115,17 +137,33 @@ public class InventoryItem {
         return price;
     }
 
+    public String getPickId() {
+        return pickId;
+    }
+
+    public void setPickId(String pickId) {
+        this.pickId = pickId;
+    }
+
+    public boolean isPicked() {
+        return picked;
+    }
+
+    public void setPicked(boolean picked) {
+        this.picked = picked;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InventoryItem that = (InventoryItem) o;
-        return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location);
+        return Double.compare(that.price, price) == 0 && picked == that.picked && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(pickId, that.pickId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku, name, location, price);
+        return Objects.hash(sku, name, location, price, pickId, picked);
     }
 
     @Override
@@ -135,6 +173,8 @@ public class InventoryItem {
                 ", name='" + name + '\'' +
                 ", location=" + location +
                 ", price=" + price +
+                ", pickId='" + pickId + '\'' +
+                ", picked=" + picked +
                 '}';
     }
 

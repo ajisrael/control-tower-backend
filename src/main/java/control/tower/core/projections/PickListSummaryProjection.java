@@ -4,7 +4,6 @@ import control.tower.core.events.*;
 import control.tower.core.queries.FindPickListsQuery;
 import control.tower.core.queryModels.PickListSummary;
 import control.tower.core.valueObjects.Location;
-import control.tower.core.valueObjects.PickItem;
 import control.tower.core.valueObjects.PickItemSummary;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -33,18 +32,6 @@ public class PickListSummaryProjection {
     public void on(PickListCreatedEvent event) {
         List<PickItemSummary> pickItemSummaryList = new ArrayList<>();
 
-        for (int i = 0; i < event.getSkuList().size(); i++) {
-            String currentSku = event.getSkuList().get(i);
-            Location skuLocation = inventoryItemSummaryRepository.findById(currentSku).get().getCurrentLocation();
-            pickItemSummaryList.add(
-                    new PickItemSummary(
-                            currentSku,
-                            skuLocation,
-                            new PickItem(currentSku)
-                    )
-            );
-        }
-
         pickListSummaryRepository.save(
                 new PickListSummary(event.getPickId(), pickItemSummaryList)
         );
@@ -61,7 +48,8 @@ public class PickListSummaryProjection {
             for (int j = 0; j < currentPickList.getPickItemSummaryList().size(); j++) {
                 PickItemSummary currentItem = currentPickList.getPickItemSummaryList().get(j);
                 if (currentItem.getSku() == event.getSku()) {
-                    currentItem.setLocation(event.getLocation());
+                    currentItem.setLocationId(event.getLocation().getLocationId());
+                    currentItem.setBinId(event.getLocation().getBinId());
                 }
             }
         }
@@ -72,12 +60,12 @@ public class PickListSummaryProjection {
     public void on(InventoryItemAddedToPickListEvent event) {
         PickListSummary pickListSummary = pickListSummaryRepository.findById(event.getPickId()).get();
         List<PickItemSummary> pickItemSummaryList = pickListSummary.getPickItemSummaryList();
-        Location skuLocation = inventoryItemSummaryRepository.findById(event.getSku()).get().getCurrentLocation();
+        String skuLocationId = inventoryItemSummaryRepository.findById(event.getSku()).get().getLocationId();
+        String skuBinId = inventoryItemSummaryRepository.findById(event.getSku()).get().getBinId();
         pickItemSummaryList.add(
                 new PickItemSummary(
                         event.getSku(),
-                        skuLocation,
-                        new PickItem(event.getSku())
+                        new Location(skuLocationId, skuBinId)
                 )
         );
     }
@@ -105,7 +93,7 @@ public class PickListSummaryProjection {
         for (int i = 0; i < pickItemSummaryList.size(); i++) {
             PickItemSummary currentItem = pickItemSummaryList.get(i);
             if (event.getSku() == currentItem.getSku()) {
-                currentItem.getPickItem().setPicked(true);
+                currentItem.setPicked(true);
             }
         }
     }
