@@ -2,6 +2,7 @@ package control.tower.aggregates;
 
 import control.tower.core.commands.CreatePickListCommand;
 import control.tower.core.commands.PickInventoryItemCommand;
+import control.tower.core.events.InventoryItemAddedToPickListEvent;
 import control.tower.core.events.InventoryItemPickedEvent;
 import control.tower.core.events.PickListCreatedEvent;
 import org.axonframework.modelling.command.IdentifierMissingException;
@@ -39,11 +40,14 @@ public class PickListTest {
     }
 
     @Test
-    void shouldCreatePickList() {
+    void shouldCreatePickListAndAddInventoryItemToPickList() {
         // TODO: Will need to update once InventoryItem check is in place
         fixture.givenNoPriorActivity()
                 .when(new CreatePickListCommand(PICK_ID, SKU_LIST, DATE))
-                .expectEvents(new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE));
+                .expectEvents(
+                        new PickListCreatedEvent(PICK_ID, SKU_LIST, DATE),
+                        new InventoryItemAddedToPickListEvent(PICK_ID, SKU)
+                );
     }
 
     @Test
