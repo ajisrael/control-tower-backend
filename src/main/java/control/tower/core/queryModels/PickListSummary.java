@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OrderBy;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,9 +21,12 @@ public class PickListSummary {
     @OrderBy("pick_item_sku DESC")
     private List<PickItemSummary> pickItemSummaryList;
 
-    public PickListSummary(String pickId, List<PickItemSummary> pickItemSummaryList) {
+    private Date pickDate;
+
+    public PickListSummary(String pickId, List<PickItemSummary> pickItemSummaryList, Date pickDate) {
         this.pickId = pickId;
         this.pickItemSummaryList = pickItemSummaryList;
+        this.pickDate = pickDate;
     }
 
     public PickListSummary() {
@@ -44,17 +48,25 @@ public class PickListSummary {
         this.pickItemSummaryList = pickItemSummaryList;
     }
 
+    public Date getPickDate() {
+        return pickDate;
+    }
+
+    public void setPickDate(Date pickDate) {
+        this.pickDate = pickDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PickListSummary that = (PickListSummary) o;
-        return Objects.equals(pickId, that.pickId) && Objects.equals(pickItemSummaryList, that.pickItemSummaryList);
+        return Objects.equals(pickId, that.pickId) && Objects.equals(pickItemSummaryList, that.pickItemSummaryList) && Objects.equals(pickDate, that.pickDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pickId, pickItemSummaryList);
+        return Objects.hash(pickId, pickItemSummaryList, pickDate);
     }
 
     @Override
@@ -62,7 +74,7 @@ public class PickListSummary {
         return "PickListSummary{" +
                 "pickId='" + pickId + '\'' +
                 ", pickItemSummaryList=" + pickItemSummaryList +
+                ", pickDate=" + pickDate +
                 '}';
     }
-
 }

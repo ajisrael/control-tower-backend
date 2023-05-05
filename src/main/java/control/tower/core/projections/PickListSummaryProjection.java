@@ -33,7 +33,7 @@ public class PickListSummaryProjection {
         List<PickItemSummary> pickItemSummaryList = new ArrayList<>();
 
         pickListSummaryRepository.save(
-                new PickListSummary(event.getPickId(), pickItemSummaryList)
+                new PickListSummary(event.getPickId(), pickItemSummaryList, event.getPickDate())
         );
     }
 
