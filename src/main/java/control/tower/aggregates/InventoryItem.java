@@ -87,6 +87,13 @@ public class InventoryItem {
         }
     }
 
+    @EventSourcingHandler
+    public void on(PickListDeletedEvent event) {
+        if (pickId == event.getPickId()) {
+            pickId = null;
+        }
+    }
+
     private boolean isNullOrEmpty(String string) {
         return string == null || string.isEmpty();
     }

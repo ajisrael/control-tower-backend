@@ -1,13 +1,11 @@
 package control.tower.aggregates;
 
-import control.tower.core.commands.AddInventoryItemToPickListCommand;
-import control.tower.core.commands.CreatePickListCommand;
-import control.tower.core.commands.PickInventoryItemCommand;
-import control.tower.core.commands.RemoveInventoryItemFromPickListCommand;
+import control.tower.core.commands.*;
 import control.tower.core.events.*;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.util.Date;
@@ -80,6 +78,13 @@ public class PickList {
         apply(new InventoryItemPickedEvent(pickId, command.getSku()));
     }
 
+    @CommandHandler
+    public void handle(DeletePickListCommand command) {
+        throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
+
+        apply(new PickListDeletedEvent(command.getPickId()));
+    }
+
     @EventSourcingHandler
     public void on(PickListCreatedEvent event) {
         pickId = event.getPickId();
@@ -98,6 +103,11 @@ public class PickList {
         if (itemCount == 0) {
             apply(new PickListDeletedEvent(pickId));
         }
+    }
+
+    @EventSourcingHandler
+    public void on(PickListDeletedEvent event) {
+        AggregateLifecycle.markDeleted();
     }
 
     // TODO: Write a helper method to match skus on regex to keep consistent format

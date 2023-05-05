@@ -70,6 +70,15 @@ public class InventoryItemSummaryProjection {
         );
     }
 
+    @EventHandler
+    public void on(PickListDeletedEvent event) {
+        List<InventoryItemSummary> items = inventoryItemSummaryRepository.findByPickId(event.getPickId());
+
+        for (InventoryItemSummary item : items) {
+            item.setPickId(null);
+        }
+    }
+
     @QueryHandler
     public List<InventoryItemSummary> handle(FindInventoryItemSummariesQuery query) {
         return inventoryItemSummaryRepository.findAll(

@@ -2,10 +2,8 @@ package control.tower.core.queryModels;
 
 import control.tower.core.valueObjects.Location;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.util.Objects;
 
 @Entity

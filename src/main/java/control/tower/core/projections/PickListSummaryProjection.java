@@ -98,6 +98,11 @@ public class PickListSummaryProjection {
         }
     }
 
+    @EventHandler
+    public void on(PickListDeletedEvent event) {
+        pickListSummaryRepository.deleteById(event.getPickId());
+    }
+
     @QueryHandler
     public List<PickListSummary> handle(FindPickListsQuery query) {
         return pickListSummaryRepository.findAll(
