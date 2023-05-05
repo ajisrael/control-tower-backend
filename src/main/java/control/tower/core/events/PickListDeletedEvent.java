@@ -33,4 +33,5 @@ public class PickListDeletedEvent {
                 "pickId='" + pickId + '\'' +
                 '}';
     }
+
 }

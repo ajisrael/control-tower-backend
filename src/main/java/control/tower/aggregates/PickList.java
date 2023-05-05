@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static control.tower.core.utils.Helper.isNullOrEmpty;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
@@ -110,14 +111,6 @@ public class PickList {
     @EventSourcingHandler
     public void on(PickListDeletedEvent event) {
         AggregateLifecycle.markDeleted();
-    }
-
-    // TODO: Write a helper method to match skus on regex to keep consistent format
-    //   in corresponding validation method.
-
-    // TODO: Move method to a utility or helper package to keep DRY with other aggregates
-    private boolean isNullOrEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 
     private void throwErrorIfPickIdIsNullOrEmpty(String pickId) {

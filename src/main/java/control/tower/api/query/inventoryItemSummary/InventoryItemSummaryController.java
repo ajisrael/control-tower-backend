@@ -30,4 +30,6 @@ public class InventoryItemSummaryController {
         ).join();
     }
 
+    // TODO: Add endpoint for getting Inventory Item Summary by id
+
 }

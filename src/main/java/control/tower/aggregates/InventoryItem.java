@@ -12,6 +12,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import java.util.Objects;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+import static control.tower.core.utils.Helper.isNullOrEmpty;
 
 @Aggregate
 public class InventoryItem {
@@ -92,10 +93,6 @@ public class InventoryItem {
         if (pickId == event.getPickId()) {
             pickId = null;
         }
-    }
-
-    private boolean isNullOrEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 
     private void throwErrorIfSkuIsNullOrEmpty(String sku) {

@@ -77,4 +77,5 @@ public class PickListSummary {
                 ", pickDate=" + pickDate +
                 '}';
     }
+
 }

@@ -2,6 +2,7 @@ package control.tower.core.projections;
 
 import control.tower.core.events.*;
 import control.tower.core.queries.FindPickListsQuery;
+import control.tower.core.queryModels.InventoryItemSummary;
 import control.tower.core.queryModels.PickListSummary;
 import control.tower.core.valueObjects.Location;
 import control.tower.core.valueObjects.PickItemSummary;
@@ -43,43 +44,38 @@ public class PickListSummaryProjection {
         //  - may be way to link persistent location on item summary to pick list
 
         List<PickListSummary> pickListSummaries = pickListSummaryRepository.findAll();
-        for (int i = 0; i < pickListSummaries.size(); i++) {
-            PickListSummary currentPickList = pickListSummaries.get(i);
-            for (int j = 0; j < currentPickList.getPickItemSummaryList().size(); j++) {
-                PickItemSummary currentItem = currentPickList.getPickItemSummaryList().get(j);
+        for (PickListSummary currentPickList : pickListSummaries) {
+            for (PickItemSummary currentItem : currentPickList.getPickItemSummaryList()) {
                 if (currentItem.getSku() == event.getSku()) {
                     currentItem.setLocationId(event.getLocation().getLocationId());
                     currentItem.setBinId(event.getLocation().getBinId());
                 }
             }
         }
+
         pickListSummaryRepository.saveAll(pickListSummaries);
     }
 
     @EventHandler
     public void on(InventoryItemAddedToPickListEvent event) {
-        PickListSummary pickListSummary = pickListSummaryRepository.findById(event.getPickId()).get();
-        List<PickItemSummary> pickItemSummaryList = pickListSummary.getPickItemSummaryList();
-        String skuLocationId = inventoryItemSummaryRepository.findById(event.getSku()).get().getLocationId();
-        String skuBinId = inventoryItemSummaryRepository.findById(event.getSku()).get().getBinId();
+        List<PickItemSummary> pickItemSummaryList  = pickListSummaryRepository.findById(event.getPickId()).get().getPickItemSummaryList();
+        InventoryItemSummary inventoryItemSummary = inventoryItemSummaryRepository.findById(event.getSku()).get();
+
         pickItemSummaryList.add(
                 new PickItemSummary(
                         event.getSku(),
-                        new Location(skuLocationId, skuBinId)
+                        new Location(inventoryItemSummary.getLocationId(), inventoryItemSummary.getBinId())
                 )
         );
     }
 
     @EventHandler
     public void on(InventoryItemRemovedFromPickListEvent event) {
-        PickListSummary pickListSummary = pickListSummaryRepository.findById(event.getPickId()).get();
-        List<PickItemSummary> pickItemSummaryList = pickListSummary.getPickItemSummaryList();
+        List<PickItemSummary> pickItemSummaryList = pickListSummaryRepository.findById(event.getPickId()).get().getPickItemSummaryList();
 
-        for (int i = 0; i < pickItemSummaryList.size(); i++) {
-            PickItemSummary currentItem = pickItemSummaryList.get(i);
-
+        for (PickItemSummary currentItem : pickItemSummaryList) {
             if (event.getSku() == currentItem.getSku()) {
-                pickItemSummaryList.remove(i);
+                pickItemSummaryList.remove(currentItem);
                 break;
             }
         }
@@ -87,11 +83,9 @@ public class PickListSummaryProjection {
 
     @EventHandler
     public void on(InventoryItemPickedEvent event) {
-        PickListSummary pickListSummary = pickListSummaryRepository.findById(event.getPickId()).get();
-        List<PickItemSummary> pickItemSummaryList = pickListSummary.getPickItemSummaryList();
+        List<PickItemSummary> pickItemSummaryList = pickListSummaryRepository.findById(event.getPickId()).get().getPickItemSummaryList();
 
-        for (int i = 0; i < pickItemSummaryList.size(); i++) {
-            PickItemSummary currentItem = pickItemSummaryList.get(i);
+        for (PickItemSummary currentItem : pickItemSummaryList) {
             if (event.getSku() == currentItem.getSku()) {
                 currentItem.setPicked(true);
             }

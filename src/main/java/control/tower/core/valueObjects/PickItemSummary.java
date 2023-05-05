@@ -55,4 +55,28 @@ public class PickItemSummary {
     public void setPicked(boolean picked) {
         this.picked = picked;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PickItemSummary that = (PickItemSummary) o;
+        return picked == that.picked && Objects.equals(sku, that.sku) && Objects.equals(locationId, that.locationId) && Objects.equals(binId, that.binId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sku, locationId, binId, picked);
+    }
+
+    @Override
+    public String toString() {
+        return "PickItemSummary{" +
+                "sku='" + sku + '\'' +
+                ", locationId='" + locationId + '\'' +
+                ", binId='" + binId + '\'' +
+                ", picked=" + picked +
+                '}';
+    }
+
 }
