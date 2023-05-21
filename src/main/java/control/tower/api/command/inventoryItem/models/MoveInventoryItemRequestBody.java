@@ -1,13 +1,20 @@
 package control.tower.api.command.inventoryItem.models;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
+@Getter
+@EqualsAndHashCode
+@ToString
 public class MoveInventoryItemRequestBody {
 
+    @NonNull
     private String sku;
-
+    @NonNull
     private String locationId;
-
+    @NonNull
     private String binId;
 
     public MoveInventoryItemRequestBody(String sku, String locationId, String binId) {
@@ -15,39 +22,4 @@ public class MoveInventoryItemRequestBody {
         this.locationId = locationId;
         this.binId = binId;
     }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public String getLocationId() {
-        return locationId;
-    }
-
-    public String getBinId() {
-        return binId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MoveInventoryItemRequestBody that = (MoveInventoryItemRequestBody) o;
-        return Objects.equals(sku, that.sku) && Objects.equals(locationId, that.locationId) && Objects.equals(binId, that.binId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sku, locationId, binId);
-    }
-
-    @Override
-    public String toString() {
-        return "MoveInventoryItemRequestBody{" +
-                "sku='" + sku + '\'' +
-                ", locationId='" + locationId + '\'' +
-                ", binId='" + binId + '\'' +
-                '}';
-    }
-
 }
