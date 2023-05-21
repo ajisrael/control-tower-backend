@@ -10,7 +10,7 @@ import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class InventoryItemTest {
+class InventoryItemTest {
     private static final String SKU = "1234";
     private static final String NAME = "chair";
     private static final String LOCATION_ID = "WHS";

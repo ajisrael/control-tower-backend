@@ -1,17 +1,24 @@
 package control.tower.api.command.inventoryItem.models;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
+@Getter
+@EqualsAndHashCode
+@ToString
 public class InventoryItemRequestBody {
 
+    @NonNull
     private String sku;
-
+    @NonNull
     private String name;
-
+    @NonNull
     private String locationId;
-
+    @NonNull
     private String binId;
-
+    @NonNull
     private double price;
 
     public InventoryItemRequestBody(String sku, String name, String locationId, String binId, double price) {
@@ -21,49 +28,4 @@ public class InventoryItemRequestBody {
         this.binId = binId;
         this.price = price;
     }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLocationId() {
-        return locationId;
-    }
-
-    public String getBinId() {
-        return binId;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InventoryItemRequestBody that = (InventoryItemRequestBody) o;
-        return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(locationId, that.locationId) && Objects.equals(binId, that.binId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sku, name, locationId, binId, price);
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItemRequestBody{" +
-                "sku='" + sku + '\'' +
-                ", name='" + name + '\'' +
-                ", locationId='" + locationId + '\'' +
-                ", binId='" + binId + '\'' +
-                ", price=" + price +
-                '}';
-    }
-
 }

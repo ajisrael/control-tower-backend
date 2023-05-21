@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PickListTest {
+class PickListTest {
 
     private static final String PICK_ID = "pick_1";
 

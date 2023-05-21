@@ -4,6 +4,8 @@ import control.tower.core.events.*;
 import control.tower.core.queries.CountInventoryItemSummariesQuery;
 import control.tower.core.queries.FindInventoryItemSummariesQuery;
 import control.tower.core.queryModels.InventoryItemSummary;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.data.domain.PageRequest;
@@ -11,9 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
 @Component
+@EqualsAndHashCode
+@ToString
 public class InventoryItemSummaryProjection {
 
     private final InventoryItemSummaryRepository inventoryItemSummaryRepository;
@@ -90,25 +93,4 @@ public class InventoryItemSummaryProjection {
     public Long handle(CountInventoryItemSummariesQuery query) {
         return inventoryItemSummaryRepository.count();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InventoryItemSummaryProjection that = (InventoryItemSummaryProjection) o;
-        return Objects.equals(inventoryItemSummaryRepository, that.inventoryItemSummaryRepository);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(inventoryItemSummaryRepository);
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItemSummaryProjection{" +
-                "inventoryItemSummaryRepository=" + inventoryItemSummaryRepository +
-                '}';
-    }
-
 }

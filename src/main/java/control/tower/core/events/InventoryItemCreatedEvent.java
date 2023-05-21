@@ -1,17 +1,23 @@
 package control.tower.core.events;
 
 import control.tower.core.valueObjects.Location;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
-import java.util.Objects;
-
+@Getter
+@EqualsAndHashCode
+@ToString
 public class InventoryItemCreatedEvent {
 
+    @NonNull
     private final String sku;
-
+    @NonNull
     private final String name;
-
+    @NonNull
     private final Location location;
-
+    @NonNull
     private final double price;
 
     public InventoryItemCreatedEvent(String sku, String name, Location location, double price) {
@@ -20,44 +26,4 @@ public class InventoryItemCreatedEvent {
         this.location = location;
         this.price = price;
     }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InventoryItemCreatedEvent that = (InventoryItemCreatedEvent) o;
-        return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sku, name, location, price);
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItemCreatedEvent{" +
-                "sku='" + sku + '\'' +
-                ", name='" + name + '\'' +
-                ", location=" + location +
-                ", price=" + price +
-                '}';
-    }
-
 }
