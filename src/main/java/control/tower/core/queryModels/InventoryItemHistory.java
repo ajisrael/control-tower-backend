@@ -2,20 +2,27 @@ package control.tower.core.queryModels;
 
 import control.tower.core.valueObjects.Location;
 import control.tower.core.valueObjects.LocationHistory;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.Instant;
-import java.util.Objects;
 
 @Entity
+@Getter
+@EqualsAndHashCode
+@ToString
 public class InventoryItemHistory {
 
     @Id
+    @NonNull
     private String sku;
-
     @Embedded
+    @NonNull
     private LocationHistory locationHistory;
 
     public InventoryItemHistory(String sku, Location startingLocation, Instant timestamp) {
@@ -27,37 +34,7 @@ public class InventoryItemHistory {
     public InventoryItemHistory () {
     }
 
-    public String getSku() {
-        return sku;
-    }
-
-    public LocationHistory getLocationHistory() {
-        return locationHistory;
-    }
-
     public void addLocationToLocationHistory(Location location, Instant timestamp) {
         this.locationHistory.addLocation(location, timestamp);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InventoryItemHistory that = (InventoryItemHistory) o;
-        return Objects.equals(sku, that.sku) && Objects.equals(locationHistory, that.locationHistory);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sku, locationHistory);
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItemHistory{" +
-                "sku='" + sku + '\'' +
-                ", locationHistory=" + locationHistory +
-                '}';
-    }
-
 }

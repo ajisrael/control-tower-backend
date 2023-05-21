@@ -1,16 +1,24 @@
 package control.tower.core.valueObjects;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
+
 import javax.persistence.Embeddable;
 import java.time.Instant;
-import java.util.Objects;
 
 @Embeddable
+@Getter
+@EqualsAndHashCode
+@ToString
 public class LocationEntry {
 
+    @NonNull
     private final String locationId;
-
+    @NonNull
     private final String binId;
-
+    @NonNull
     private final Instant timestamp;
 
     public LocationEntry(Location location, Instant timestamp) {
@@ -24,39 +32,4 @@ public class LocationEntry {
         this.binId = "location";
         this.timestamp = Instant.now();
     }
-
-    public String getLocationId() {
-        return locationId;
-    }
-
-    public String getBinId() {
-        return binId;
-    }
-
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LocationEntry that = (LocationEntry) o;
-        return Objects.equals(locationId, that.locationId) && Objects.equals(binId, that.binId) && Objects.equals(timestamp, that.timestamp);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locationId, binId, timestamp);
-    }
-
-    @Override
-    public String toString() {
-        return "LocationEntry{" +
-                "locationId='" + locationId + '\'' +
-                ", binId='" + binId + '\'' +
-                ", timestamp=" + timestamp +
-                '}';
-    }
-
 }

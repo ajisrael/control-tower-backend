@@ -1,18 +1,25 @@
 package control.tower.core.valueObjects;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 import org.axonframework.modelling.command.EntityId;
 
 import javax.persistence.Embeddable;
-import java.util.Objects;
 
 @Embeddable
+@Getter
+@EqualsAndHashCode
+@ToString
 public class Location {
 
     @EntityId
+    @NonNull
     private String locationKey;
-    
+    @NonNull
     private String locationId;
-    
+    @NonNull
     private String binId;
 
     public Location() {
@@ -25,18 +32,6 @@ public class Location {
         this.locationKey = locationId + "_" + binId;
         this.locationId = locationId;
         this.binId = binId;
-    }
-
-    public String getLocationKey() {
-        return locationKey;
-    }
-
-    public String getLocationId() {
-        return locationId;
-    }
-
-    public String getBinId() {
-        return binId;
     }
 
     public void setLocationKey(String locationKey) {
@@ -54,27 +49,4 @@ public class Location {
         this.binId = binId;
         this.locationKey = this.locationId + "_" + binId;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
-        return Objects.equals(locationKey, location.locationKey) && Objects.equals(locationId, location.locationId) && Objects.equals(binId, location.binId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locationKey, locationId, binId);
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "locationKey='" + locationKey + '\'' +
-                ", locationId='" + locationId + '\'' +
-                ", binId='" + binId + '\'' +
-                '}';
-    }
-
 }

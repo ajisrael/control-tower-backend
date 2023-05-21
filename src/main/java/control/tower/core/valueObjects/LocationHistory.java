@@ -1,5 +1,10 @@
 package control.tower.core.valueObjects;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
+
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -10,10 +15,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@EqualsAndHashCode
+@ToString
 public class LocationHistory {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderBy("timestamp DESC")
+    @NonNull
     private List<LocationEntry> locations = new ArrayList<>();
 
     public LocationHistory() {}
