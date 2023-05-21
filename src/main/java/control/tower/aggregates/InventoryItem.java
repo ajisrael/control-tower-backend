@@ -1,8 +1,7 @@
 package control.tower.aggregates;
 
 import control.tower.core.commands.CreateInventoryItemCommand;
-import control.tower.core.events.InventoryItemCreatedEvent;
-import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.events.*;
 import control.tower.core.commands.MoveInventoryItemCommand;
 import control.tower.core.valueObjects.Location;
 import org.axonframework.commandhandling.CommandHandler;
@@ -13,6 +12,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import java.util.Objects;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
+import static control.tower.core.utils.Helper.isNullOrEmpty;
 
 @Aggregate
 public class InventoryItem {
@@ -25,6 +25,10 @@ public class InventoryItem {
     private Location location;
 
     private double price;
+
+    private String pickId = null;
+
+    private boolean picked = false;
 
     // TODO: Review what other fields are required for an Inventory Item
     //  - Customer
@@ -65,8 +69,30 @@ public class InventoryItem {
         location = event.getLocation();
     }
 
-    private boolean isNullOrEmpty(String string) {
-        return string == null || string.isEmpty();
+    @EventSourcingHandler
+    public void on(InventoryItemAddedToPickListEvent event) {
+        pickId = event.getPickId();
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemRemovedFromPickListEvent event) {
+        if (sku == event.getSku()) {
+            pickId = null;
+        }
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemPickedEvent event) {
+        if (sku == event.getSku()) {
+            picked = true;
+        }
+    }
+
+    @EventSourcingHandler
+    public void on(PickListDeletedEvent event) {
+        if (pickId == event.getPickId()) {
+            pickId = null;
+        }
     }
 
     private void throwErrorIfSkuIsNullOrEmpty(String sku) {
@@ -103,16 +129,48 @@ public class InventoryItem {
         return sku;
     }
 
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Location getLocation() {
         return location;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getPickId() {
+        return pickId;
+    }
+
+    public void setPickId(String pickId) {
+        this.pickId = pickId;
+    }
+
+    public boolean isPicked() {
+        return picked;
+    }
+
+    public void setPicked(boolean picked) {
+        this.picked = picked;
     }
 
     @Override
@@ -120,12 +178,12 @@ public class InventoryItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InventoryItem that = (InventoryItem) o;
-        return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location);
+        return Double.compare(that.price, price) == 0 && picked == that.picked && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(pickId, that.pickId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku, name, location, price);
+        return Objects.hash(sku, name, location, price, pickId, picked);
     }
 
     @Override
@@ -135,6 +193,8 @@ public class InventoryItem {
                 ", name='" + name + '\'' +
                 ", location=" + location +
                 ", price=" + price +
+                ", pickId='" + pickId + '\'' +
+                ", picked=" + picked +
                 '}';
     }
 

@@ -2,7 +2,6 @@ package control.tower.core.queryModels;
 
 import control.tower.core.valueObjects.Location;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
@@ -15,38 +14,80 @@ public class InventoryItemSummary {
 
     private String name;
 
-    @Embedded
-    private Location currentLocation;
+    private String locationId;
+
+    private String binId;
 
     private double price;
+
+    private String pickId = null;
+
+    private boolean picked = false;
 
     public InventoryItemSummary(String sku, String name, Location currentLocation, double price) {
         this.sku = sku;
         this.name = name;
-        this.currentLocation = currentLocation;
+        this.locationId = currentLocation.getLocationId();
+        this.binId = currentLocation.getBinId();
         this.price = price;
     }
 
     public InventoryItemSummary() {} // Required by Axon
 
     public String getSku() {
-        return this.sku;
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
-    public Location getCurrentLocation() {
-        return this.currentLocation;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getBinId() {
+        return binId;
+    }
+
+    public void setBinId(String binId) {
+        this.binId = binId;
     }
 
     public double getPrice() {
-        return this.price;
+        return price;
     }
 
-    public void setCurrentLocation(Location location) {
-        this.currentLocation = location;
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getPickId() {
+        return pickId;
+    }
+
+    public void setPickId(String pickId) {
+        this.pickId = pickId;
+    }
+
+    public boolean isPicked() {
+        return picked;
+    }
+
+    public void setPicked(boolean picked) {
+        this.picked = picked;
     }
 
     @Override
@@ -54,12 +95,12 @@ public class InventoryItemSummary {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InventoryItemSummary that = (InventoryItemSummary) o;
-        return Double.compare(that.price, price) == 0 && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(currentLocation, that.currentLocation);
+        return Double.compare(that.price, price) == 0 && picked == that.picked && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(locationId, that.locationId) && Objects.equals(binId, that.binId) && Objects.equals(pickId, that.pickId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sku, name, currentLocation, price);
+        return Objects.hash(sku, name, locationId, binId, price, pickId, picked);
     }
 
     @Override
@@ -67,8 +108,11 @@ public class InventoryItemSummary {
         return "InventoryItemSummary{" +
                 "sku='" + sku + '\'' +
                 ", name='" + name + '\'' +
-                ", currentLocation=" + currentLocation +
+                ", locationId='" + locationId + '\'' +
+                ", binId='" + binId + '\'' +
                 ", price=" + price +
+                ", pickId='" + pickId + '\'' +
+                ", picked=" + picked +
                 '}';
     }
 

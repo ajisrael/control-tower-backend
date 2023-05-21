@@ -1,6 +1,6 @@
 package control.tower.api.query.inventoryItemHistory;
 
-import control.tower.core.queries.FindInventoryItemSummariesQuery;
+import control.tower.core.queries.FindInventoryItemHistoriesQuery;
 import control.tower.core.queryModels.InventoryItemHistory;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -22,12 +22,14 @@ public class InventoryItemHistoryController {
     }
 
     @GetMapping
-    public List<InventoryItemHistory> getInventoryItemSummaries(@RequestParam(required = false, defaultValue = "0") int offset,
+    public List<InventoryItemHistory> getInventoryItemHistories(@RequestParam(required = false, defaultValue = "0") int offset,
                                                                 @RequestParam(required = false, defaultValue = "100") int limit) {
         return queryGateway.query(
-                new FindInventoryItemSummariesQuery(offset, limit),
+                new FindInventoryItemHistoriesQuery(offset, limit),
                 ResponseTypes.multipleInstancesOf(InventoryItemHistory.class)
         ).join();
     }
+
+    // TODO: Add endpoint for getting Inventory Item History for a single item by id
 
 }

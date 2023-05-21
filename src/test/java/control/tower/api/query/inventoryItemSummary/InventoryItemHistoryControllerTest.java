@@ -1,7 +1,7 @@
 package control.tower.api.query.inventoryItemSummary;
 
 import control.tower.api.query.inventoryItemHistory.InventoryItemHistoryController;
-import control.tower.core.queries.FindInventoryItemSummariesQuery;
+import control.tower.core.queries.FindInventoryItemHistoriesQuery;
 import control.tower.core.queryModels.InventoryItemHistory;
 import control.tower.core.valueObjects.Location;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -33,35 +33,35 @@ public class InventoryItemHistoryControllerTest {
     }
 
     @Test
-    void getInventoryItemSummaries_ReturnsInventoryItemSummaries() {
+    void getInventoryItemHistories_ReturnsInventoryItemHistories() {
         // Arrange
         int offset = 0;
         int limit = 100;
         List<InventoryItemHistory> expectedHistories = new ArrayList<>();
         expectedHistories.add(new InventoryItemHistory("sku1", new Location("location1", "bin1"), Instant.now()));
-        when(queryGateway.query(any(FindInventoryItemSummariesQuery.class), any(ResponseTypes.multipleInstancesOf(InventoryItemHistory.class).getClass())))
+        when(queryGateway.query(any(FindInventoryItemHistoriesQuery.class), any(ResponseTypes.multipleInstancesOf(InventoryItemHistory.class).getClass())))
                 .thenReturn(completedFuture(expectedHistories));
 
         // Act
-        List<InventoryItemHistory> actualSummaries = controller.getInventoryItemSummaries(offset, limit);
+        List<InventoryItemHistory> actualHistories = controller.getInventoryItemHistories(offset, limit);
 
         // Assert
-        assertEquals(expectedHistories, actualSummaries);
+        assertEquals(expectedHistories, actualHistories);
     }
 
     @Test
-    void getInventoryItemSummaries_ReturnsEmptyList() {
+    void getInventoryItemHistories_ReturnsEmptyList() {
         // Arrange
         int offset = 0;
         int limit = 100;
         List<InventoryItemHistory> expectedHistories = new ArrayList<>();
-        when(queryGateway.query(any(FindInventoryItemSummariesQuery.class), any(ResponseTypes.multipleInstancesOf(InventoryItemHistory.class).getClass())))
+        when(queryGateway.query(any(FindInventoryItemHistoriesQuery.class), any(ResponseTypes.multipleInstancesOf(InventoryItemHistory.class).getClass())))
                 .thenReturn(completedFuture(expectedHistories));
 
         // Act
-        List<InventoryItemHistory> actualSummaries = controller.getInventoryItemSummaries(offset, limit);
+        List<InventoryItemHistory> actualHistories = controller.getInventoryItemHistories(offset, limit);
 
         // Assert
-        assertEquals(expectedHistories, actualSummaries);
+        assertEquals(expectedHistories, actualHistories);
     }
 }

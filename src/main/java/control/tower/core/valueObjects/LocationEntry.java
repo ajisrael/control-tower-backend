@@ -7,26 +7,30 @@ import java.util.Objects;
 @Embeddable
 public class LocationEntry {
 
-    private final Location location;
+    private final String locationId;
+
+    private final String binId;
+
     private final Instant timestamp;
 
     public LocationEntry(Location location, Instant timestamp) {
-        this.location = location;
-        this.timestamp = timestamp;
-    }
-
-    public LocationEntry(String locationId, String binId, Instant timestamp) {
-        this.location = new Location(locationId, binId);
+        this.locationId = location.getLocationId();
+        this.binId = location.getBinId();
         this.timestamp = timestamp;
     }
 
     public LocationEntry() {
-        this.location = new Location("default","location");
+        this.locationId = "default";
+        this.binId = "location";
         this.timestamp = Instant.now();
     }
 
-    public Location getLocation() {
-        return location;
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public String getBinId() {
+        return binId;
     }
 
     public Instant getTimestamp() {
@@ -38,18 +42,19 @@ public class LocationEntry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LocationEntry that = (LocationEntry) o;
-        return Objects.equals(location, that.location) && Objects.equals(timestamp, that.timestamp);
+        return Objects.equals(locationId, that.locationId) && Objects.equals(binId, that.binId) && Objects.equals(timestamp, that.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(location, timestamp);
+        return Objects.hash(locationId, binId, timestamp);
     }
 
     @Override
     public String toString() {
         return "LocationEntry{" +
-                "location=" + location +
+                "locationId='" + locationId + '\'' +
+                ", binId='" + binId + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
     }

@@ -99,7 +99,7 @@ public class ControlTowerUI extends UI {
         grid.addColumn(InventoryItemSummary::getName).setCaption("Name");
         grid.addColumn(InventoryItemSummary::getPrice).setCaption("Price");
         grid.addColumn(item ->
-                item.getCurrentLocation().getLocationId() + "_" + item.getCurrentLocation().getBinId()
+                item.getLocationId() + "_" + item.getBinId()
         ).setCaption("Current Location");
 
         // TODO: Try to adjust the size of the summary grid to better fit the test page

@@ -1,13 +1,11 @@
 package control.tower.api.command.pickList;
 
+import control.tower.api.command.pickList.models.DeletePickListRequestBody;
 import control.tower.api.command.pickList.models.UpdatePickListRequestBody;
 import control.tower.api.command.pickList.models.PickListRequestBody;
 import control.tower.api.command.pickList.models.PickListResponse;
 import control.tower.config.Constants;
-import control.tower.core.commands.AddInventoryItemToPickListCommand;
-import control.tower.core.commands.CreatePickListCommand;
-import control.tower.core.commands.PickInventoryItemCommand;
-import control.tower.core.commands.RemoveInventoryItemFromPickListCommand;
+import control.tower.core.commands.*;
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
@@ -48,6 +46,24 @@ public class PickListController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<PickListResponse> deletePickList(@RequestBody DeletePickListRequestBody deletePickListRequestBody) {
+        try {
+            commandGateway.sendAndWait(
+                    new DeletePickListCommand(deletePickListRequestBody.getPickId())
+            );
+            return ResponseEntity.ok(
+                    new PickListResponse(true, "Pick list deleted successfully"));
+        } catch (IllegalArgumentException | CommandExecutionException e) {
+            return ResponseEntity.badRequest().body(
+                    new PickListResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new PickListResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
+        }
+
+    }
+
     @PutMapping(path = "/pick")
     public ResponseEntity<PickListResponse> pickInventoryItem(@RequestBody UpdatePickListRequestBody updatePickListRequestBody) {
         try {
@@ -67,8 +83,6 @@ public class PickListController {
                     new PickListResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
         }
     }
-
-    // TODO: Add endpoints and functionality to add and remove an item(s) from a pick list
 
     @PutMapping(path = "/add")
     public ResponseEntity<PickListResponse> addInventoryItemToPickList(@RequestBody UpdatePickListRequestBody updatePickListRequestBody) {
