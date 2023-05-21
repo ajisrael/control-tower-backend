@@ -2,6 +2,11 @@ package control.tower.aggregates;
 
 import control.tower.core.commands.*;
 import control.tower.core.events.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -10,19 +15,23 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static control.tower.core.utils.Helper.isNullOrEmpty;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class PickList {
 
     @AggregateIdentifier
+    @NonNull
     private String pickId;
-
+    @NonNull
     private int itemCount;
-
+    @NonNull
     private Date pickDate;
 
     // TODO: Add additional fields:
@@ -48,7 +57,6 @@ public class PickList {
             apply(new InventoryItemAddedToPickListEvent(command.getPickId(), sku));
         }
     }
-
 
     @CommandHandler
     public void handle(AddInventoryItemToPickListCommand command) {
@@ -148,51 +156,4 @@ public class PickList {
     private void throwErrorIfInventoryItemIsAlreadyPicked(String sku) {
         // TODO: Implement this method
     }
-
-    public String getPickId() {
-        return pickId;
-    }
-
-    public void setPickId(String pickId) {
-        this.pickId = pickId;
-    }
-
-    public Date getPickDate() {
-        return pickDate;
-    }
-
-    public void setPickDate(Date pickDate) {
-        this.pickDate = pickDate;
-    }
-
-    public int getItemCount() {
-        return itemCount;
-    }
-
-    public void setItemCount(int itemCount) {
-        this.itemCount = itemCount;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PickList pickList = (PickList) o;
-        return itemCount == pickList.itemCount && Objects.equals(pickId, pickList.pickId) && Objects.equals(pickDate, pickList.pickDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pickId, itemCount, pickDate);
-    }
-
-    @Override
-    public String toString() {
-        return "PickList{" +
-                "pickId='" + pickId + '\'' +
-                ", itemCount=" + itemCount +
-                ", pickDate=" + pickDate +
-                '}';
-    }
-
 }

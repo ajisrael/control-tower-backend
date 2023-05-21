@@ -4,31 +4,38 @@ import control.tower.core.commands.CreateInventoryItemCommand;
 import control.tower.core.events.*;
 import control.tower.core.commands.MoveInventoryItemCommand;
 import control.tower.core.valueObjects.Location;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import java.util.Objects;
-
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 import static control.tower.core.utils.Helper.isNullOrEmpty;
 
 @Aggregate
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class InventoryItem {
 
     @AggregateIdentifier
+    @NonNull
     private String sku;
-
+    @NonNull
     private String name;
-
+    @NonNull
     private Location location;
-
+    @NonNull
     private double price;
-
-    private String pickId = null;
-
+    @NonNull
     private boolean picked = false;
+    private String pickId = null;
 
     // TODO: Review what other fields are required for an Inventory Item
     //  - Customer
@@ -124,78 +131,4 @@ public class InventoryItem {
             throw new IllegalArgumentException("Location must be different than current location");
         }
     }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getPickId() {
-        return pickId;
-    }
-
-    public void setPickId(String pickId) {
-        this.pickId = pickId;
-    }
-
-    public boolean isPicked() {
-        return picked;
-    }
-
-    public void setPicked(boolean picked) {
-        this.picked = picked;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InventoryItem that = (InventoryItem) o;
-        return Double.compare(that.price, price) == 0 && picked == that.picked && Objects.equals(sku, that.sku) && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(pickId, that.pickId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sku, name, location, price, pickId, picked);
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItem{" +
-                "sku='" + sku + '\'' +
-                ", name='" + name + '\'' +
-                ", location=" + location +
-                ", price=" + price +
-                ", pickId='" + pickId + '\'' +
-                ", picked=" + picked +
-                '}';
-    }
-
 }
