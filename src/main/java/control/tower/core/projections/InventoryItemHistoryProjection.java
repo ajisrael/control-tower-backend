@@ -2,7 +2,7 @@ package control.tower.core.projections;
 
 import control.tower.core.events.InventoryItemCreatedEvent;
 import control.tower.core.events.InventoryItemMovedEvent;
-import control.tower.core.queries.FindInventoryItemSummariesQuery;
+import control.tower.core.queries.FindInventoryItemHistoriesQuery;
 import control.tower.core.queryModels.InventoryItemHistory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -47,7 +47,7 @@ public class InventoryItemHistoryProjection {
     }
 
     @QueryHandler
-    public List<InventoryItemHistory> handle(FindInventoryItemSummariesQuery query) {
+    public List<InventoryItemHistory> handle(FindInventoryItemHistoriesQuery query) {
         return inventoryItemHistoryRepository.findAll(
                 PageRequest.of(query.getPageNumber(), query.getLimit(), Sort.by("sku").ascending())
         ).getContent();
