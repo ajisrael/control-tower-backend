@@ -4,6 +4,8 @@ import control.tower.core.events.InventoryItemCreatedEvent;
 import control.tower.core.events.InventoryItemMovedEvent;
 import control.tower.core.queries.FindInventoryItemSummariesQuery;
 import control.tower.core.queryModels.InventoryItemHistory;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.Timestamp;
@@ -14,10 +16,11 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 @ProcessingGroup("inventory-item-history")
+@EqualsAndHashCode
+@ToString
 public class InventoryItemHistoryProjection {
 
     private final InventoryItemHistoryRepository inventoryItemHistoryRepository;
@@ -49,25 +52,4 @@ public class InventoryItemHistoryProjection {
                 PageRequest.of(query.getPageNumber(), query.getLimit(), Sort.by("sku").ascending())
         ).getContent();
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InventoryItemHistoryProjection that = (InventoryItemHistoryProjection) o;
-        return Objects.equals(inventoryItemHistoryRepository, that.inventoryItemHistoryRepository);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(inventoryItemHistoryRepository);
-    }
-
-    @Override
-    public String toString() {
-        return "InventoryItemHistoryProjection{" +
-                "inventoryItemHistoryRepository=" + inventoryItemHistoryRepository +
-                '}';
-    }
-
 }
