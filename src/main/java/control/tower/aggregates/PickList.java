@@ -128,7 +128,7 @@ public class PickList {
     }
 
     private void throwErrorIfSkuListIsEmpty(List<String> skuList) {
-        if (skuList.size() == 0) {
+        if (skuList.isEmpty()) {
             throw new IllegalArgumentException("Must have at least one sku in pick list");
         }
     }

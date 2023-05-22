@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,7 +19,7 @@ public class PickListRequestBody {
     @NonNull
     private String pickDate;
 
-    public PickListRequestBody(String pickId, ArrayList<String> skuList, String pickDate) {
+    public PickListRequestBody(String pickId, List<String> skuList, String pickDate) {
         this.pickId = pickId;
         this.skuList = skuList;
         this.pickDate = pickDate;

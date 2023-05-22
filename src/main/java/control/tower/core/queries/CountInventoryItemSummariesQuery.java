@@ -7,5 +7,7 @@ import lombok.ToString;
 @ToString
 public class CountInventoryItemSummariesQuery {
 
-    public CountInventoryItemSummariesQuery() {}
+    public CountInventoryItemSummariesQuery() {
+        // Required by Axon
+    }
 }

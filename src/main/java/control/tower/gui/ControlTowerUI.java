@@ -7,11 +7,14 @@ import com.vaadin.ui.*;
 import control.tower.core.commands.CreateInventoryItemCommand;
 import control.tower.core.queryModels.InventoryItemSummary;
 import control.tower.core.commands.MoveInventoryItemCommand;
+import lombok.EqualsAndHashCode;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 
 @SpringUI
 @Push
+@EqualsAndHashCode
 public class ControlTowerUI extends UI {
+
 
     private final CommandGateway commandGateway;
 

@@ -37,6 +37,9 @@
         <maven.compiler.release>11</maven.compiler.release>
         <sonar.sources>pom.xml,src/main/java</sonar.sources>
         <sonar.java.binaries>out/production</sonar.java.binaries>
+        <sonar.coverage.exclusions>
+            **/control/tower/config/**
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencies>

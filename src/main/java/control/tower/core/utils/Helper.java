@@ -2,6 +2,9 @@ package control.tower.core.utils;
 
 public class Helper {
 
+    private Helper() {
+        throw new IllegalStateException("Utility class");
+    }
     public static boolean isNullOrEmpty(String string) {
         return string == null || string.isEmpty();
     }
