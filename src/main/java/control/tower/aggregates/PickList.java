@@ -33,9 +33,8 @@ public class PickList {
     private int itemCount;
     @NonNull
     private Date pickDate;
-
-    // TODO: Add additional fields:
-    //  - boolean completed
+    @NonNull
+    private boolean completed = false;
 
     public PickList() {} // Required by Axon
 
