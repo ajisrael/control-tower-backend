@@ -43,3 +43,8 @@
 [ ] Add logging to rest endpoints for all transactions
 
 [ ] Add request id's to rest endpoints and cache them for idempotency
+
+[ ] Implement the following checks as part of a Saga for creating a pick list:
+    - private void throwErrorIfInventoryItemDoesNotExist(String sku) {}
+    - private void throwErrorIfInventoryItemAssignedToPickList(String sku) {} 
+    - private void throwErrorIfInventoryItemIsAlreadyPicked(String sku) {}
