@@ -48,3 +48,5 @@
     - private void throwErrorIfInventoryItemDoesNotExist(String sku) {}
     - private void throwErrorIfInventoryItemAssignedToPickList(String sku) {} 
     - private void throwErrorIfInventoryItemIsAlreadyPicked(String sku) {}
+
+[ ] Delete inventory item command, event, and endpoint
