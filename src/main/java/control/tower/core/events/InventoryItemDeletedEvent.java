@@ -8,12 +8,12 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class PickListDeletedEvent {
+public class InventoryItemDeletedEvent {
 
     @NonNull
-    private final String pickId;
+    private final String sku;
 
-    public PickListDeletedEvent(String pickId) {
-        this.pickId = pickId;
+    public InventoryItemDeletedEvent(String sku) {
+        this.sku = sku;
     }
 }
