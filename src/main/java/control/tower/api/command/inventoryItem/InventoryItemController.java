@@ -1,10 +1,12 @@
 package control.tower.api.command.inventoryItem;
 
+import control.tower.api.command.inventoryItem.models.DeleteInventoryItemRequestBody;
 import control.tower.api.command.inventoryItem.models.InventoryItemRequestBody;
 import control.tower.api.command.inventoryItem.models.InventoryItemResponse;
 import control.tower.api.command.inventoryItem.models.MoveInventoryItemRequestBody;
 import control.tower.config.Constants;
 import control.tower.core.commands.CreateInventoryItemCommand;
+import control.tower.core.commands.DeleteInventoryItemCommand;
 import control.tower.core.commands.MoveInventoryItemCommand;
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -67,5 +69,23 @@ public class InventoryItemController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<InventoryItemResponse> deleteInventoryItem(@RequestBody DeleteInventoryItemRequestBody deleteInventoryItemRequestBody) {
+        try {
+            commandGateway.sendAndWait(
+                    new DeleteInventoryItemCommand(
+                            deleteInventoryItemRequestBody.getSku()
+                    )
+            );
+            return ResponseEntity.ok(
+                    new InventoryItemResponse(true, "Inventory item deleted successfully"));
+        } catch (IllegalArgumentException | CommandExecutionException e) {
+            return ResponseEntity.badRequest().body(
+                    new InventoryItemResponse(false, Constants.ILLEGAL_ARGUMENT_PREFIX + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new InventoryItemResponse(false, Constants.EXCEPTION_PREFIX + e.getMessage()));
+        }
+    }
 }
 
