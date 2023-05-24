@@ -82,6 +82,11 @@ public class InventoryItemSummaryProjection {
         }
     }
 
+    @EventHandler
+    public void on(InventoryItemDeletedEvent event) {
+        inventoryItemSummaryRepository.deleteById(event.getSku());
+    }
+
     @QueryHandler
     public List<InventoryItemSummary> handle(FindInventoryItemSummariesQuery query) {
         return inventoryItemSummaryRepository.findAll(
