@@ -49,4 +49,8 @@
     - private void throwErrorIfInventoryItemAssignedToPickList(String sku) {} 
     - private void throwErrorIfInventoryItemIsAlreadyPicked(String sku) {}
 
-[ ] Delete inventory item command, event, and endpoint
+[x] Delete inventory item command, event, and endpoint
+
+[ ] In Pick List Saga, update a pick list when an inventoryItem in the list is deleted
+
+[ ] Integrate with eurika and api gateway to have separate deployments of command and query
