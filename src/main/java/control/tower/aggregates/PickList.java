@@ -33,9 +33,8 @@ public class PickList {
     private int itemCount;
     @NonNull
     private Date pickDate;
-
-    // TODO: Add additional fields:
-    //  - boolean completed
+    @NonNull
+    private boolean completed = false;
 
     public PickList() {} // Required by Axon
 
@@ -47,8 +46,6 @@ public class PickList {
 
         for (String sku : command.getSkuList()) {
             throwErrorIfSkuIsNullOrEmpty(sku);
-            throwErrorIfInventoryItemDoesNotExist(sku);
-            throwErrorIfInventoryItemAssignedToPickList(sku);
         }
 
         apply(new PickListCreatedEvent(command.getPickId(), command.getSkuList(), command.getPickDate()));
@@ -63,8 +60,6 @@ public class PickList {
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
 
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
-        throwErrorIfInventoryItemDoesNotExist(command.getSku());
-        throwErrorIfInventoryItemAssignedToPickList(command.getSku());
 
         apply(new InventoryItemAddedToPickListEvent(pickId, command.getSku()));
     }
@@ -73,7 +68,6 @@ public class PickList {
     public void handle(RemoveInventoryItemFromPickListCommand command) {
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
-        throwErrorIfInventoryItemDoesNotExist(command.getSku());
 
         apply(new InventoryItemRemovedFromPickListEvent(pickId, command.getSku()));
     }
@@ -83,8 +77,6 @@ public class PickList {
         throwErrorIfPickIdIsNullOrEmpty(command.getPickId());
 
         throwErrorIfSkuIsNullOrEmpty(command.getSku());
-        throwErrorIfInventoryItemDoesNotExist(command.getSku());
-        throwErrorIfInventoryItemIsAlreadyPicked(command.getSku());
 
         apply(new InventoryItemPickedEvent(pickId, command.getSku()));
     }
@@ -143,17 +135,5 @@ public class PickList {
         if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
         }
-    }
-
-    private void throwErrorIfInventoryItemDoesNotExist(String sku) {
-        // TODO: Implement this method
-    }
-
-    private void throwErrorIfInventoryItemAssignedToPickList(String sku) {
-        // TODO: Implement this method
-    }
-
-    private void throwErrorIfInventoryItemIsAlreadyPicked(String sku) {
-        // TODO: Implement this method
     }
 }
