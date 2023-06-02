@@ -7,8 +7,6 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.axonframework.commandhandling.RoutingKey;
 
-import java.util.Objects;
-
 @Getter
 @EqualsAndHashCode
 @ToString

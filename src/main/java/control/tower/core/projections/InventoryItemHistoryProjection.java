@@ -1,7 +1,9 @@
 package control.tower.core.projections;
 
 import control.tower.core.events.InventoryItemCreatedEvent;
+import control.tower.core.events.InventoryItemDeletedEvent;
 import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.events.PickListDeletedEvent;
 import control.tower.core.queries.FindInventoryItemHistoriesQuery;
 import control.tower.core.queryModels.InventoryItemHistory;
 import lombok.EqualsAndHashCode;
@@ -44,6 +46,11 @@ public class InventoryItemHistoryProjection {
                     inventoryItemHistoryRepository.save(inventoryItemHistory);
                 }
         );
+    }
+
+    @EventHandler
+    public void on(InventoryItemDeletedEvent event) {
+        inventoryItemHistoryRepository.deleteById(event.getSku());
     }
 
     @QueryHandler

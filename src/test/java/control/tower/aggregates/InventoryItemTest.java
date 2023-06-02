@@ -1,10 +1,14 @@
 package control.tower.aggregates;
 
 import control.tower.core.commands.CreateInventoryItemCommand;
+import control.tower.core.commands.DeleteInventoryItemCommand;
 import control.tower.core.commands.MoveInventoryItemCommand;
 import control.tower.core.events.InventoryItemCreatedEvent;
+import control.tower.core.events.InventoryItemDeletedEvent;
 import control.tower.core.events.InventoryItemMovedEvent;
 import control.tower.core.valueObjects.Location;
+import org.axonframework.modelling.command.AggregateNotFoundException;
+import org.axonframework.modelling.command.IdentifierMissingException;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -144,5 +148,35 @@ class InventoryItemTest {
         fixture.given(new InventoryItemCreatedEvent(SKU, NAME, LOCATION, PRICE))
                 .when(new MoveInventoryItemCommand(SKU, LOCATION_ID, BIN_ID))
                 .expectException(IllegalArgumentException.class);
+    }
+
+    @Test
+    void shouldDeleteInventoryItem() {
+        fixture.given(new InventoryItemCreatedEvent(SKU, NAME, LOCATION, PRICE))
+                .when(new DeleteInventoryItemCommand(SKU))
+                .expectEvents(new InventoryItemDeletedEvent(SKU));
+    }
+
+    @Test
+    void shouldNotDeleteInventoryItemWhenSkuIsNull() {
+        fixture.given(new InventoryItemCreatedEvent(SKU, NAME, LOCATION, PRICE))
+                .when(new DeleteInventoryItemCommand(null))
+                .expectException(IdentifierMissingException.class);
+    }
+
+    @Test
+    void shouldNotDeleteInventoryItemWhenInventoryItemDoesNotExist() {
+        fixture.givenNoPriorActivity()
+                .when(new DeleteInventoryItemCommand(SKU))
+                .expectException(AggregateNotFoundException.class);
+    }
+
+    @Test
+    void shouldNotDeleteInventoryItemWhenInventoryItemIsAlreadyDeleted() {
+        fixture.given(
+                new InventoryItemCreatedEvent(SKU, NAME, LOCATION, PRICE),
+                new InventoryItemDeletedEvent(SKU))
+                .when(new DeleteInventoryItemCommand(SKU))
+                .expectException(AggregateNotFoundException.class);
     }
 }

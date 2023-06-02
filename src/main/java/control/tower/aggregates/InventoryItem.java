@@ -1,8 +1,15 @@
 package control.tower.aggregates;
 
 import control.tower.core.commands.CreateInventoryItemCommand;
-import control.tower.core.events.*;
+import control.tower.core.commands.DeleteInventoryItemCommand;
 import control.tower.core.commands.MoveInventoryItemCommand;
+import control.tower.core.events.InventoryItemAddedToPickListEvent;
+import control.tower.core.events.InventoryItemCreatedEvent;
+import control.tower.core.events.InventoryItemDeletedEvent;
+import control.tower.core.events.InventoryItemMovedEvent;
+import control.tower.core.events.InventoryItemPickedEvent;
+import control.tower.core.events.InventoryItemRemovedFromPickListEvent;
+import control.tower.core.events.PickListDeletedEvent;
 import control.tower.core.valueObjects.Location;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,6 +19,7 @@ import lombok.ToString;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
@@ -63,6 +71,13 @@ public class InventoryItem {
         apply(new InventoryItemMovedEvent(sku, name, command.getNewLocation(), price));
     }
 
+    @CommandHandler
+    public void handle(DeleteInventoryItemCommand command) {
+        throwErrorIfSkuIsNullOrEmpty(command.getSku());
+
+        apply(new InventoryItemDeletedEvent(command.getSku()));
+    }
+
     @EventSourcingHandler
     public void on(InventoryItemCreatedEvent event) {
         sku = event.getSku();
@@ -100,6 +115,11 @@ public class InventoryItem {
         if (pickId == event.getPickId()) {
             pickId = null;
         }
+    }
+
+    @EventSourcingHandler
+    public void on(InventoryItemDeletedEvent event) {
+        AggregateLifecycle.markDeleted();
     }
 
     private void throwErrorIfSkuIsNullOrEmpty(String sku) {
